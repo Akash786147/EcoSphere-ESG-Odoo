@@ -9,3 +9,17 @@ export type CreateCategoryBody = z.infer<typeof CreateCategorySchema>;
 
 export const UpdateCategorySchema = CreateCategorySchema.partial();
 export type UpdateCategoryBody = z.infer<typeof UpdateCategorySchema>;
+
+import { registerCrudPaths } from '../../../common/lib/openapi-crud.js';
+import { z as _z } from 'zod';
+
+registerCrudPaths({
+  tags: ['Social'],
+  basePath: '/api/v1/social/categories',
+  entityName: 'Categories',
+  schemas: {
+    create: CreateCategorySchema,
+    update: UpdateCategorySchema,
+    response: _z.any(),
+  },
+});

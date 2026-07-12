@@ -31,3 +31,17 @@ export const DiversityUpdateSchema = z.object({
   nationality: z.string().optional(),
 });
 export type DiversityUpdateBody = z.infer<typeof DiversityUpdateSchema>;
+
+import { registerCrudPaths } from '../../../common/lib/openapi-crud.js';
+import { z as _z } from 'zod';
+
+registerCrudPaths({
+  tags: ['People'],
+  basePath: '/api/v1/people/employees',
+  entityName: 'Employees',
+  schemas: {
+    create: CreateEmployeeSchema,
+    update: UpdateEmployeeSchema,
+    response: _z.any(),
+  },
+});

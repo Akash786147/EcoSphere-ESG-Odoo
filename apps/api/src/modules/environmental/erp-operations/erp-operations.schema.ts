@@ -15,3 +15,17 @@ export type CreateErpOperationBody = z.infer<typeof CreateErpOperationSchema>;
 
 export const UpdateErpOperationSchema = CreateErpOperationSchema.partial();
 export type UpdateErpOperationBody = z.infer<typeof UpdateErpOperationSchema>;
+
+import { registerCrudPaths } from '../../../common/lib/openapi-crud.js';
+import { z as _z } from 'zod';
+
+registerCrudPaths({
+  tags: ['Environmental'],
+  basePath: '/api/v1/environmental/erp-operations',
+  entityName: 'Erp Operations',
+  schemas: {
+    create: CreateErpOperationSchema,
+    update: UpdateErpOperationSchema,
+    response: _z.any(),
+  },
+});

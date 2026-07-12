@@ -20,3 +20,17 @@ export const UpdateProgressSchema = z.object({
   progressPct: z.coerce.number().int().min(0).max(100),
 });
 export type UpdateProgressBody = z.infer<typeof UpdateProgressSchema>;
+
+import { registerCrudPaths } from '../../../common/lib/openapi-crud.js';
+import { z as _z } from 'zod';
+
+registerCrudPaths({
+  tags: ['Gamification'],
+  basePath: '/api/v1/gamification/challenges',
+  entityName: 'Challenges',
+  schemas: {
+    create: CreateChallengeSchema,
+    update: UpdateProgressSchema,
+    response: _z.any(),
+  },
+});

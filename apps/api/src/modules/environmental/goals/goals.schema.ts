@@ -14,3 +14,17 @@ export type CreateGoalBody = z.infer<typeof CreateGoalSchema>;
 
 export const UpdateGoalSchema = CreateGoalSchema.partial();
 export type UpdateGoalBody = z.infer<typeof UpdateGoalSchema>;
+
+import { registerCrudPaths } from '../../../common/lib/openapi-crud.js';
+import { z as _z } from 'zod';
+
+registerCrudPaths({
+  tags: ['Environmental'],
+  basePath: '/api/v1/environmental/goals',
+  entityName: 'Goals',
+  schemas: {
+    create: CreateGoalSchema,
+    update: UpdateGoalSchema,
+    response: _z.any(),
+  },
+});

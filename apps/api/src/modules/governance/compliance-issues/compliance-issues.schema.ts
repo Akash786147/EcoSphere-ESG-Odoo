@@ -17,3 +17,17 @@ export type UpdateComplianceIssueBody = z.infer<typeof UpdateComplianceIssueSche
 
 export const ReassignSchema = z.object({ ownerId: z.string().uuid() });
 export type ReassignBody = z.infer<typeof ReassignSchema>;
+
+import { registerCrudPaths } from '../../../common/lib/openapi-crud.js';
+import { z as _z } from 'zod';
+
+registerCrudPaths({
+  tags: ['Governance'],
+  basePath: '/api/v1/governance/compliance-issues',
+  entityName: 'Compliance Issues',
+  schemas: {
+    create: CreateComplianceIssueSchema,
+    update: UpdateComplianceIssueSchema,
+    response: _z.any(),
+  },
+});

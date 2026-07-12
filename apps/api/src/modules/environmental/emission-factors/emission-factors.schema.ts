@@ -23,3 +23,17 @@ export const EmissionFactorQuerySchema = z.object({
   status: z.string().optional(),
 });
 export type EmissionFactorQuery = z.infer<typeof EmissionFactorQuerySchema>;
+
+import { registerCrudPaths } from '../../../common/lib/openapi-crud.js';
+import { z as _z } from 'zod';
+
+registerCrudPaths({
+  tags: ['Environmental'],
+  basePath: '/api/v1/environmental/emission-factors',
+  entityName: 'Emission Factors',
+  schemas: {
+    create: CreateEmissionFactorSchema,
+    update: UpdateEmissionFactorSchema,
+    response: _z.any(),
+  },
+});

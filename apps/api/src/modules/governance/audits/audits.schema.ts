@@ -16,3 +16,17 @@ export const UpdateAuditSchema = CreateAuditSchema.partial().extend({
   status: z.nativeEnum(AuditStatus).optional(),
 });
 export type UpdateAuditBody = z.infer<typeof UpdateAuditSchema>;
+
+import { registerCrudPaths } from '../../../common/lib/openapi-crud.js';
+import { z as _z } from 'zod';
+
+registerCrudPaths({
+  tags: ['Governance'],
+  basePath: '/api/v1/governance/audits',
+  entityName: 'Audits',
+  schemas: {
+    create: CreateAuditSchema,
+    update: UpdateAuditSchema,
+    response: _z.any(),
+  },
+});

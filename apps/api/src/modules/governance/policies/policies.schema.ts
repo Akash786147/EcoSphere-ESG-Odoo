@@ -12,3 +12,17 @@ export type CreatePolicyBody = z.infer<typeof CreatePolicySchema>;
 
 export const UpdatePolicySchema = CreatePolicySchema.partial();
 export type UpdatePolicyBody = z.infer<typeof UpdatePolicySchema>;
+
+import { registerCrudPaths } from '../../../common/lib/openapi-crud.js';
+import { z as _z } from 'zod';
+
+registerCrudPaths({
+  tags: ['Governance'],
+  basePath: '/api/v1/governance/policies',
+  entityName: 'Policies',
+  schemas: {
+    create: CreatePolicySchema,
+    update: UpdatePolicySchema,
+    response: _z.any(),
+  },
+});

@@ -11,3 +11,17 @@ export type CreateProductBody = z.infer<typeof CreateProductSchema>;
 
 export const UpdateProductSchema = CreateProductSchema.partial();
 export type UpdateProductBody = z.infer<typeof UpdateProductSchema>;
+
+import { registerCrudPaths } from '../../../common/lib/openapi-crud.js';
+import { z as _z } from 'zod';
+
+registerCrudPaths({
+  tags: ['Environmental'],
+  basePath: '/api/v1/environmental/products',
+  entityName: 'Products',
+  schemas: {
+    create: CreateProductSchema,
+    update: UpdateProductSchema,
+    response: _z.any(),
+  },
+});

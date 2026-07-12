@@ -16,3 +16,17 @@ export const UpdateCsrActivitySchema = CreateCsrActivitySchema.partial().extend(
   status: z.nativeEnum(CsrActivityStatus).optional(),
 });
 export type UpdateCsrActivityBody = z.infer<typeof UpdateCsrActivitySchema>;
+
+import { registerCrudPaths } from '../../../common/lib/openapi-crud.js';
+import { z as _z } from 'zod';
+
+registerCrudPaths({
+  tags: ['Social'],
+  basePath: '/api/v1/social/csr-activities',
+  entityName: 'Csr Activities',
+  schemas: {
+    create: CreateCsrActivitySchema,
+    update: UpdateCsrActivitySchema,
+    response: _z.any(),
+  },
+});

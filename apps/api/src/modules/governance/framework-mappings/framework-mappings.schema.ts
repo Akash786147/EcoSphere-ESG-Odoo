@@ -8,3 +8,17 @@ export const CreateFrameworkMappingSchema = z.object({
   internalMetric: z.string().min(1),
 });
 export type CreateFrameworkMappingBody = z.infer<typeof CreateFrameworkMappingSchema>;
+
+import { registerCrudPaths } from '../../../common/lib/openapi-crud.js';
+import { z as _z } from 'zod';
+
+registerCrudPaths({
+  tags: ['Governance'],
+  basePath: '/api/v1/governance/framework-mappings',
+  entityName: 'Framework Mappings',
+  schemas: {
+    create: CreateFrameworkMappingSchema,
+    update: undefined,
+    response: _z.any(),
+  },
+});

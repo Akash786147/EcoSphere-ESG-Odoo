@@ -22,3 +22,17 @@ export const UpdateProgressSchema = z.object({
   scorePct: z.coerce.number().min(0).max(100).optional(),
 });
 export type UpdateProgressBody = z.infer<typeof UpdateProgressSchema>;
+
+import { registerCrudPaths } from '../../../common/lib/openapi-crud.js';
+import { z as _z } from 'zod';
+
+registerCrudPaths({
+  tags: ['Social'],
+  basePath: '/api/v1/social/trainings',
+  entityName: 'Trainings',
+  schemas: {
+    create: CreateTrainingSchema,
+    update: UpdateProgressSchema,
+    response: _z.any(),
+  },
+});

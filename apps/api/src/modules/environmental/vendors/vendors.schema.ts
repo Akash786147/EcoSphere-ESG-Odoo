@@ -12,3 +12,17 @@ export type CreateVendorBody = z.infer<typeof CreateVendorSchema>;
 
 export const UpdateVendorSchema = CreateVendorSchema.partial();
 export type UpdateVendorBody = z.infer<typeof UpdateVendorSchema>;
+
+import { registerCrudPaths } from '../../../common/lib/openapi-crud.js';
+import { z as _z } from 'zod';
+
+registerCrudPaths({
+  tags: ['Environmental'],
+  basePath: '/api/v1/environmental/vendors',
+  entityName: 'Vendors',
+  schemas: {
+    create: CreateVendorSchema,
+    update: UpdateVendorSchema,
+    response: _z.any(),
+  },
+});
