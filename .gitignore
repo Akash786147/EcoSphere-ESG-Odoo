@@ -47,4 +47,4 @@ coverage.out
 
 # Go workspace
 go.work
-go.work.sum
+go.work.sumapps/api/api
