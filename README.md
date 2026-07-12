@@ -33,7 +33,7 @@ Get a clear picture of your ESG performance.
 
 EcoSphere is a modern full-stack monorepo application:
 - **Backend (API):** Express.js API built with TypeScript and Bun. Uses Drizzle ORM to interface with PostgreSQL for robust relational data management, including multi-tenant schema isolation. BullMQ and Redis are used for background jobs.
-- **Frontend (Web):** A React-based web application (found in `apps/web`) for the user interface.
+- **Frontend (Web):** A React 19 web application (found in `apps/web`) powered by Vite. Uses TanStack Router for file-based routing, TanStack Query for data fetching and state management, TailwindCSS v4 for styling, and shadcn/ui for accessible components.
 
 ## Getting Started
 
@@ -49,11 +49,24 @@ EcoSphere is a modern full-stack monorepo application:
    pnpm install
    ```
 2. Configure environment variables in `apps/api/.env` based on `apps/api/.env.example`.
-3. Start the development server:
+3. Start the backend development server:
    ```bash
    cd apps/api
    bun run dev
    ```
+4. In a new terminal, start the frontend development server:
+   ```bash
+   cd apps/web
+   pnpm run dev
+   ```
+   > Note: We recommend using `pnpm` as the package manager for this monorepo since it utilizes pnpm workspaces.
+
+### Frontend Scripts
+Inside the `apps/web` directory, you can run:
+- `pnpm run dev` - Starts the Vite development server
+- `pnpm run build` - Typechecks and builds the frontend for production
+- `pnpm run preview` - Locally previews the production build
+- `pnpm run lint` - Runs ESLint across the frontend codebase
 
 ## Testing
 
