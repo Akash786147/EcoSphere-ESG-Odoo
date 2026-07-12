@@ -6,6 +6,7 @@ import { pinoHttp } from 'pino-http';
 import { logger } from './common/config/logger.js';
 import { errorHandler } from './common/middleware/error-handler.js';
 import { generateOpenAPIDocument } from './common/lib/openapi.js';
+import swaggerUi from 'swagger-ui-express';
 
 // Module routes
 import { authRoutes } from './modules/auth/auth.routes.js';
@@ -27,7 +28,13 @@ app.use(helmet());
 app.use(cors());
 app.use(compression());
 app.use(express.json({ limit: '10mb' }));
-app.use(pinoHttp({ logger }));
+app.use(pinoHttp({
+  logger,
+  serializers: {
+    req: (req) => ({ method: req.method, url: req.url }),
+    res: (res) => ({ statusCode: res.statusCode }),
+  },
+}));
 
 // ─── Health & Docs ───────────────────────────────────────────────────
 app.get('/health', (_req, res) => {
@@ -37,6 +44,11 @@ app.get('/health', (_req, res) => {
 app.get('/openapi.json', (_req, res) => {
   res.json(generateOpenAPIDocument());
 });
+
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(generateOpenAPIDocument(), {
+  customSiteTitle: "EcoSphere API Docs",
+  swaggerOptions: { persistAuthorization: true },
+}));
 
 // ─── API v1 Routes ──────────────────────────────────────────────────
 const v1 = express.Router();

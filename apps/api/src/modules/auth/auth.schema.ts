@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { registry } from '../../common/lib/openapi.js';
+import { registry, ErrorSchema } from '../../common/lib/openapi.js';
 
 // ─── Shared ───────────────────────────────────────────────────────────────────
 const TokenPairSchema = registry.register(
@@ -50,7 +50,7 @@ registry.register('SignupRequest', SignupBodySchema);
 
 // ─── Refresh ─────────────────────────────────────────────────────────────────
 export const RefreshBodySchema = z.object({
-  refreshToken: z.string().min(1),
+  refreshToken: z.string().min(1).openapi({ example: 'eyJhbGci...' }),
 });
 export type RefreshBody = z.infer<typeof RefreshBodySchema>;
 
@@ -65,3 +65,81 @@ export const ResetPasswordBodySchema = z.object({
   password: z.string().min(8),
 });
 export type ResetPasswordBody = z.infer<typeof ResetPasswordBodySchema>;
+
+// ─── OpenAPI Paths ─────────────────────────────────────────────────────────────
+
+registry.registerPath({
+  method: 'post',
+  path: '/api/v1/auth/login',
+  tags: ['Auth'],
+  summary: 'Login to existing account',
+  request: {
+    body: {
+      content: { 'application/json': { schema: LoginBodySchema } },
+    },
+  },
+  responses: {
+    200: { description: 'Successful login', content: { 'application/json': { schema: LoginResponseSchema } } },
+    401: { description: 'Unauthorized', content: { 'application/json': { schema: ErrorSchema } } },
+  },
+});
+
+registry.registerPath({
+  method: 'post',
+  path: '/api/v1/auth/signup',
+  tags: ['Auth'],
+  summary: 'Register new organization and admin',
+  request: {
+    body: {
+      content: { 'application/json': { schema: SignupBodySchema } },
+    },
+  },
+  responses: {
+    201: { description: 'Successfully registered', content: { 'application/json': { schema: LoginResponseSchema } } },
+    400: { description: 'Validation error', content: { 'application/json': { schema: ErrorSchema } } },
+  },
+});
+
+registry.registerPath({
+  method: 'post',
+  path: '/api/v1/auth/refresh',
+  tags: ['Auth'],
+  summary: 'Refresh access token',
+  request: {
+    body: {
+      content: { 'application/json': { schema: RefreshBodySchema } },
+    },
+  },
+  responses: {
+    200: { description: 'New token pair', content: { 'application/json': { schema: TokenPairSchema } } },
+    401: { description: 'Invalid refresh token', content: { 'application/json': { schema: ErrorSchema } } },
+  },
+});
+
+registry.registerPath({
+  method: 'post',
+  path: '/api/v1/auth/logout',
+  tags: ['Auth'],
+  summary: 'Logout and revoke refresh token',
+  security: [{ BearerAuth: [] }],
+  request: {
+    body: {
+      content: { 'application/json': { schema: RefreshBodySchema } },
+    },
+  },
+  responses: {
+    204: { description: 'Successfully logged out' },
+  },
+});
+
+registry.registerPath({
+  method: 'get',
+  path: '/api/v1/auth/me',
+  tags: ['Auth'],
+  summary: 'Get current user profile',
+  security: [{ BearerAuth: [] }],
+  responses: {
+    200: { description: 'User profile', content: { 'application/json': { schema: UserMeSchema } } },
+    401: { description: 'Unauthorized', content: { 'application/json': { schema: ErrorSchema } } },
+  },
+});
