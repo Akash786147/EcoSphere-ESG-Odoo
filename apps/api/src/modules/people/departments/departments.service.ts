@@ -57,7 +57,8 @@ export async function updateDepartment(orgId: string, id: string, body: UpdateDe
 
 export async function deleteDepartment(orgId: string, id: string) {
   const [row] = await db
-    .delete(departments)
+    .update(departments)
+    .set({ status: 'INACTIVE' })
     .where(and(eq(departments.id, id), eq(departments.organizationId, orgId)))
     .returning();
   return row ?? null;

@@ -8,6 +8,7 @@ import { CreateVendorSchema, UpdateVendorSchema } from './vendors.schema.js';
 export const vendorRoutes = Router();
 
 vendorRoutes.get('/', ctrl.list);
+vendorRoutes.get('/:id', ctrl.getOne);
 vendorRoutes.post(
   '/',
   rbac('ADMIN', 'ESG_OFFICER'),
@@ -21,3 +22,5 @@ vendorRoutes.put(
   ctrl.update,
 );
 vendorRoutes.delete('/:id', rbac('ADMIN', 'ESG_OFFICER'), ctrl.remove);
+
+vendorRoutes.put('/:id', rbac('ADMIN', 'ESG_OFFICER'), validate(z.object({ body: UpdateVendorSchema })), ctrl.update);

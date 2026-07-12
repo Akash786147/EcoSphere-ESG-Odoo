@@ -8,6 +8,7 @@ import { CreateRewardSchema, UpdateRewardSchema } from './rewards.schema.js';
 export const rewardRoutes = Router();
 
 rewardRoutes.get('/', ctrl.list);
+rewardRoutes.get('/:id', ctrl.getOne);
 rewardRoutes.get('/redemptions', rbac('ADMIN', 'ESG_OFFICER'), ctrl.redemptions);
 rewardRoutes.post(
   '/',
@@ -21,4 +22,5 @@ rewardRoutes.put(
   validate(z.object({ body: UpdateRewardSchema })),
   ctrl.update,
 );
+rewardRoutes.delete('/:id', rbac('ADMIN', 'ESG_OFFICER'), ctrl.remove);
 rewardRoutes.post('/:id/redeem', ctrl.redeem);

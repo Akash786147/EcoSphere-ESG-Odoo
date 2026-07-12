@@ -79,3 +79,8 @@ export async function listOverdueIssues(orgId: string) {
     .from(complianceIssues)
     .where(and(eq(complianceIssues.organizationId, orgId), eq(complianceIssues.status, 'OPEN'), lt(complianceIssues.dueDate, today)));
 }
+
+export async function deleteComplianceIssue(orgId: string, id: string) {
+  const [row] = await db.delete(complianceIssues).where(and(eq(complianceIssues.organizationId, orgId), eq(complianceIssues.id, id))).returning();
+  return row ?? null;
+}

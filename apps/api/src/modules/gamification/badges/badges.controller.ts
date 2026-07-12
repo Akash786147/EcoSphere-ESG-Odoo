@@ -28,3 +28,13 @@ export async function award(req: Request, res: Response) {
   const row = await svc.awardBadgeManual(req.user!.orgId, (req.params['id'] as string), employeeId);
   return created(res, row);
 }
+
+export async function getOne(req: Request, res: Response) {
+  const row = await svc.getBadge(req.user!.orgId, req.params['id'] as string);
+  return row ? ok(res, row) : notFound(res, 'Badge');
+}
+
+export async function remove(req: Request, res: Response) {
+  const row = await svc.deleteBadge(req.user!.orgId, req.params['id'] as string);
+  return row ? ok(res, row) : notFound(res, 'Badge');
+}

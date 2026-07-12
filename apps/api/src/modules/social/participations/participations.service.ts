@@ -4,6 +4,7 @@ import { employeeParticipations, csrActivities } from '../../../common/db/schema
 import { parsePagination, buildMeta } from '../../../common/lib/pagination.js';
 import type { Request } from 'express';
 
+
 export async function listParticipations(orgId: string, req: Request) {
   const { page, limit, offset } = parsePagination(req);
   const conditions = [eq(employeeParticipations.organizationId, orgId)];
@@ -58,3 +59,14 @@ export async function rejectParticipation(orgId: string, id: string, approverId:
     .returning();
   return row ?? null;
 }
+
+export async function getParticipation(orgId: string, id: string) {
+  const [row] = await db.select().from(employeeParticipations).where(and(eq(employeeParticipations.organizationId, orgId), eq(employeeParticipations.id, id))).limit(1);
+  return row ?? null;
+}
+
+export async function deleteParticipation(orgId: string, id: string) {
+  const [row] = await db.delete(employeeParticipations).where(and(eq(employeeParticipations.organizationId, orgId), eq(employeeParticipations.id, id))).returning();
+  return row ?? null;
+}
+

@@ -136,3 +136,8 @@ export async function rejectChallengeParticipation(orgId: string, id: string, ap
     .returning();
   return row ?? null;
 }
+
+export async function deleteChallenge(orgId: string, id: string) {
+  const [row] = await db.delete(challenges).where(and(eq(challenges.organizationId, orgId), eq(challenges.id, id))).returning();
+  return row ?? null;
+}

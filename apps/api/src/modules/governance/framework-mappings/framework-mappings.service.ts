@@ -17,7 +17,17 @@ export async function listFrameworkMappings(orgId: string, req: Request) {
   return { rows, meta: buildMeta(page, limit, Number(c?.count ?? 0)) };
 }
 
+export async function getFrameworkMapping(orgId: string, id: string) {
+  const [row] = await db.select().from(frameworkMappings).where(and(eq(frameworkMappings.organizationId, orgId), eq(frameworkMappings.id, id))).limit(1);
+  return row ?? null;
+}
+
 export async function createFrameworkMapping(orgId: string, body: CreateFrameworkMappingBody) {
   const [row] = await db.insert(frameworkMappings).values({ ...body, organizationId: orgId }).returning();
   return row;
+}
+
+export async function deleteFrameworkMapping(orgId: string, id: string) {
+  const [row] = await db.delete(frameworkMappings).where(and(eq(frameworkMappings.organizationId, orgId), eq(frameworkMappings.id, id))).returning();
+  return row ?? null;
 }

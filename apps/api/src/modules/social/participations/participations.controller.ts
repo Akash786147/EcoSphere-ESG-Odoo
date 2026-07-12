@@ -16,3 +16,14 @@ export async function reject(req: Request, res: Response) {
   const row = await svc.rejectParticipation(req.user!.orgId, (req.params['id'] as string), req.user!.sub);
   return row ? ok(res, row) : notFound(res, 'Participation');
 }
+
+export async function getOne(req: Request, res: Response) {
+  const row = await svc.getParticipation(req.user!.orgId, req.params['id'] as string);
+  return row ? ok(res, row) : notFound(res, 'Participation');
+}
+
+export async function remove(req: Request, res: Response) {
+  const row = await svc.deleteParticipation(req.user!.orgId, req.params['id'] as string);
+  return row ? ok(res, row) : notFound(res, 'Participation');
+}
+

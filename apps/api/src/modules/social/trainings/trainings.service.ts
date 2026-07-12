@@ -69,3 +69,13 @@ export async function updateTrainingProgress(orgId: string, id: string, body: Up
     .returning();
   return row ?? null;
 }
+
+export async function getTraining(orgId: string, id: string) {
+  const [row] = await db.select().from(trainings).where(and(eq(trainings.organizationId, orgId), eq(trainings.id, id))).limit(1);
+  return row ?? null;
+}
+
+export async function deleteTraining(orgId: string, id: string) {
+  const [row] = await db.delete(trainings).where(and(eq(trainings.organizationId, orgId), eq(trainings.id, id))).returning();
+  return row ?? null;
+}

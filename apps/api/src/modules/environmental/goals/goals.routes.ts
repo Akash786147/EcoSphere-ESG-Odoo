@@ -23,3 +23,5 @@ goalRoutes.put(
 );
 goalRoutes.delete('/:id', rbac('ADMIN', 'ESG_OFFICER'), ctrl.remove);
 goalRoutes.get('/:id/forecast', ctrl.forecast);
+
+goalRoutes.put('/:id', rbac('ADMIN', 'ESG_OFFICER'), validate(z.object({ body: UpdateGoalSchema })), ctrl.update);

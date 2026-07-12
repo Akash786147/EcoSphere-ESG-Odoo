@@ -22,3 +22,7 @@ auditRoutes.put(
   ctrl.update,
 );
 auditRoutes.post('/:id/complete', rbac('ADMIN', 'ESG_OFFICER', 'AUDITOR'), ctrl.complete);
+
+auditRoutes.delete('/:id', rbac('ADMIN', 'ESG_OFFICER'), ctrl.remove);
+
+auditRoutes.put('/:id', rbac('ADMIN', 'ESG_OFFICER'), validate(z.object({ body: UpdateAuditSchema })), ctrl.update);

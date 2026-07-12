@@ -8,6 +8,7 @@ import { CreateTrainingSchema, UpdateTrainingSchema, UpdateProgressSchema } from
 export const trainingRoutes = Router();
 
 trainingRoutes.get('/', ctrl.list);
+trainingRoutes.get('/:id', ctrl.getOne);
 trainingRoutes.post(
   '/',
   rbac('ADMIN', 'ESG_OFFICER'),
@@ -26,3 +27,7 @@ trainingRoutes.patch(
   validate(z.object({ body: UpdateProgressSchema })),
   ctrl.updateProgress,
 );
+
+trainingRoutes.delete('/:id', rbac('ADMIN', 'ESG_OFFICER'), ctrl.remove);
+
+trainingRoutes.put('/:id', rbac('ADMIN', 'ESG_OFFICER'), validate(z.object({ body: UpdateTrainingSchema })), ctrl.update);

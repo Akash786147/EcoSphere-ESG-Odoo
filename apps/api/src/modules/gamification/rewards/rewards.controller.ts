@@ -8,6 +8,11 @@ export async function list(req: Request, res: Response) {
   return paginated(res, rows, meta);
 }
 
+export async function getOne(req: Request, res: Response) {
+  const row = await svc.getReward(req.user!.orgId, req.params['id'] as string);
+  return row ? ok(res, row) : notFound(res, 'Reward');
+}
+
 export async function create(req: Request, res: Response) {
   const row = await svc.createReward(req.user!.orgId, req.body as CreateRewardBody);
   return created(res, row);
@@ -15,6 +20,11 @@ export async function create(req: Request, res: Response) {
 
 export async function update(req: Request, res: Response) {
   const row = await svc.updateReward(req.user!.orgId, (req.params['id'] as string), req.body as UpdateRewardBody);
+  return row ? ok(res, row) : notFound(res, 'Reward');
+}
+
+export async function remove(req: Request, res: Response) {
+  const row = await svc.deleteReward(req.user!.orgId, req.params['id'] as string);
   return row ? ok(res, row) : notFound(res, 'Reward');
 }
 

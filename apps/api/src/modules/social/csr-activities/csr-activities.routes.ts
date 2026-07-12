@@ -23,3 +23,5 @@ csrActivityRoutes.put(
 );
 csrActivityRoutes.delete('/:id', rbac('ADMIN', 'ESG_OFFICER'), ctrl.remove);
 csrActivityRoutes.post('/:id/join', ctrl.join);
+
+csrActivityRoutes.put('/:id', rbac('ADMIN', 'ESG_OFFICER'), validate(z.object({ body: UpdateCsrActivitySchema })), ctrl.update);
