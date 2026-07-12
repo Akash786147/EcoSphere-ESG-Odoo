@@ -1,27 +1,19 @@
 import { Router } from 'express';
 import { authenticate } from '../../common/middleware/authenticate.js';
-import { requireTenant } from '../../common/middleware/tenant.js';
-import * as ctrl from './governance.controller.js';
+import { requireTenant } from '../../common/middleware/rbac.js';
+
+import { policyRoutes } from './policies/policies.routes.js';
+import { auditRoutes } from './audits/audits.routes.js';
+import { complianceIssueRoutes } from './compliance-issues/compliance-issues.routes.js';
+import { frameworkMappingRoutes } from './framework-mappings/framework-mappings.routes.js';
 
 export const governanceRoutes = Router();
 
+// Apply auth and tenant validation to all governance routes
 governanceRoutes.use(authenticate, requireTenant);
 
-// Policies
-governanceRoutes.get('/policies', ctrl.listPolicies);
-governanceRoutes.post('/policies', ctrl.createPolicy);
-governanceRoutes.post('/policies/:id/acknowledge', ctrl.acknowledgePolicy);
-
-// Audits
-governanceRoutes.get('/audits', ctrl.listAudits);
-governanceRoutes.post('/audits', ctrl.createAudit);
-governanceRoutes.put('/audits/:id', ctrl.updateAudit);
-
-// Compliance Issues
-governanceRoutes.get('/compliance-issues', ctrl.listComplianceIssues);
-governanceRoutes.post('/compliance-issues', ctrl.createComplianceIssue);
-governanceRoutes.put('/compliance-issues/:id', ctrl.updateComplianceIssue);
-
-// Framework Mappings
-governanceRoutes.get('/framework-mappings', ctrl.listFrameworkMappings);
-governanceRoutes.post('/framework-mappings', ctrl.createFrameworkMapping);
+// Mount sub-routers
+governanceRoutes.use('/policies', policyRoutes);
+governanceRoutes.use('/audits', auditRoutes);
+governanceRoutes.use('/compliance-issues', complianceIssueRoutes);
+governanceRoutes.use('/framework-mappings', frameworkMappingRoutes);

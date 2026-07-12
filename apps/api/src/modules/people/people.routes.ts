@@ -1,20 +1,15 @@
 import { Router } from 'express';
 import { authenticate } from '../../common/middleware/authenticate.js';
-import { requireTenant } from '../../common/middleware/tenant.js';
-import * as ctrl from './people.controller.js';
+import { requireTenant } from '../../common/middleware/rbac.js';
+
+import { departmentRoutes } from './departments/departments.routes.js';
+import { employeeRoutes } from './employees/employees.routes.js';
 
 export const peopleRoutes = Router();
 
+// Apply auth and tenant validation to all people routes
 peopleRoutes.use(authenticate, requireTenant);
 
-// Departments
-peopleRoutes.get('/departments', ctrl.listDepartments);
-peopleRoutes.get('/departments/:id', ctrl.getDepartment);
-peopleRoutes.post('/departments', ctrl.createDepartment);
-peopleRoutes.put('/departments/:id', ctrl.updateDepartment);
-
-// Employees
-peopleRoutes.get('/employees', ctrl.listEmployees);
-peopleRoutes.get('/employees/:id', ctrl.getEmployee);
-peopleRoutes.post('/employees', ctrl.createEmployee);
-peopleRoutes.put('/employees/:id', ctrl.updateEmployee);
+// Mount sub-routers
+peopleRoutes.use('/departments', departmentRoutes);
+peopleRoutes.use('/employees', employeeRoutes);

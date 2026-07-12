@@ -1,34 +1,23 @@
 import { Router } from 'express';
 import { authenticate } from '../../common/middleware/authenticate.js';
-import { requireTenant } from '../../common/middleware/tenant.js';
-import * as ctrl from './environmental.controller.js';
+import { requireTenant } from '../../common/middleware/rbac.js';
+
+import { emissionFactorRoutes } from './emission-factors/emission-factors.routes.js';
+import { erpOperationRoutes } from './erp-operations/erp-operations.routes.js';
+import { carbonTransactionRoutes } from './carbon-transactions/carbon-transactions.routes.js';
+import { productRoutes } from './products/products.routes.js';
+import { vendorRoutes } from './vendors/vendors.routes.js';
+import { goalRoutes } from './goals/goals.routes.js';
 
 export const environmentalRoutes = Router();
 
+// Apply auth and tenant validation to all environmental routes
 environmentalRoutes.use(authenticate, requireTenant);
 
-// Emission Factors
-environmentalRoutes.get('/emission-factors', ctrl.listEmissionFactors);
-environmentalRoutes.post('/emission-factors', ctrl.createEmissionFactor);
-environmentalRoutes.put('/emission-factors/:id', ctrl.updateEmissionFactor);
-
-// ERP Operations
-environmentalRoutes.get('/operations', ctrl.listOperations);
-environmentalRoutes.post('/operations', ctrl.createOperation);
-environmentalRoutes.post('/operations/import-csv', ctrl.importOperationsCsv);
-
-// Carbon Transactions
-environmentalRoutes.get('/carbon-transactions', ctrl.listCarbonTransactions);
-
-// Products ESG
-environmentalRoutes.get('/products', ctrl.listProducts);
-environmentalRoutes.post('/products', ctrl.createProduct);
-
-// Vendors
-environmentalRoutes.get('/vendors', ctrl.listVendors);
-environmentalRoutes.post('/vendors', ctrl.createVendor);
-
-// Environmental Goals
-environmentalRoutes.get('/goals', ctrl.listGoals);
-environmentalRoutes.post('/goals', ctrl.createGoal);
-environmentalRoutes.get('/goals/:id/forecasts', ctrl.getGoalForecasts);
+// Mount sub-routers
+environmentalRoutes.use('/emission-factors', emissionFactorRoutes);
+environmentalRoutes.use('/erp-operations', erpOperationRoutes);
+environmentalRoutes.use('/carbon-transactions', carbonTransactionRoutes);
+environmentalRoutes.use('/products', productRoutes);
+environmentalRoutes.use('/vendors', vendorRoutes);
+environmentalRoutes.use('/goals', goalRoutes);
