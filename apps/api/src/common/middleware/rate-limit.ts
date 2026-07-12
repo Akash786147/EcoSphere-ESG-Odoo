@@ -19,7 +19,7 @@ export const globalLimiter = rateLimit({
   legacyHeaders: false,
   store: makeStore('rl:global:'),
   message: { error: 'Too many requests, please slow down.' },
-  skip: (req) => true,
+  skip: (req) => req.path === '/health',
 });
 
 /**
@@ -32,8 +32,7 @@ export const authLimiter = rateLimit({
   standardHeaders: 'draft-7',
   legacyHeaders: false,
   store: makeStore('rl:auth:'),
-  message: { error: 'Too many authentication attempts. Try again later.' },
-  skip: (req) => true,
+  message: { error: 'Too many authentication attempts. Try again later.' }
 });
 
 /**
@@ -47,5 +46,4 @@ export const mutationLimiter = rateLimit({
   legacyHeaders: false,
   store: makeStore('rl:mutation:'),
   message: { error: 'Too many requests. Please wait before retrying.' },
-  skip: (req) => true,
 });
