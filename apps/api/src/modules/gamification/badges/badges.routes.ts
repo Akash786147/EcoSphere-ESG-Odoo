@@ -8,6 +8,7 @@ import { CreateBadgeSchema, UpdateBadgeSchema } from './badges.schema.js';
 export const badgeRoutes = Router();
 
 badgeRoutes.get('/', ctrl.list);
+badgeRoutes.get('/:id', ctrl.getOne);
 badgeRoutes.get('/mine', ctrl.mine);
 badgeRoutes.post(
   '/',
@@ -22,3 +23,7 @@ badgeRoutes.put(
   ctrl.update,
 );
 badgeRoutes.post('/:id/award', rbac('ADMIN', 'ESG_OFFICER'), ctrl.award);
+
+badgeRoutes.delete('/:id', rbac('ADMIN', 'ESG_OFFICER'), ctrl.remove);
+
+badgeRoutes.put('/:id', rbac('ADMIN', 'ESG_OFFICER'), validate(z.object({ body: UpdateBadgeSchema })), ctrl.update);

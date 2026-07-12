@@ -30,3 +30,7 @@ complianceIssueRoutes.post(
 );
 complianceIssueRoutes.post('/:id/resolve', rbac('ADMIN', 'ESG_OFFICER', 'AUDITOR'), ctrl.resolve);
 complianceIssueRoutes.post('/:id/close', rbac('ADMIN', 'ESG_OFFICER'), ctrl.close);
+
+complianceIssueRoutes.delete('/:id', rbac('ADMIN', 'ESG_OFFICER'), ctrl.remove);
+
+complianceIssueRoutes.put('/:id', rbac('ADMIN', 'ESG_OFFICER'), validate(z.object({ body: UpdateComplianceIssueSchema })), ctrl.update);

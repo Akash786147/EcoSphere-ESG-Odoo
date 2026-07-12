@@ -17,3 +17,18 @@ export async function getSummary(req: Request, res: Response) {
   const data = await svc.getCarbonSummary(req.user!.orgId);
   return ok(res, data);
 }
+
+export async function getOne(req: Request, res: Response) {
+  const row = await svc.getCarbonTransaction(req.user!.orgId, req.params['id'] as string);
+  return row ? ok(res, row) : notFound(res, 'Carbon Transaction');
+}
+
+export async function remove(req: Request, res: Response) {
+  const row = await svc.deleteCarbonTransaction(req.user!.orgId, req.params['id'] as string);
+  return row ? ok(res, row) : notFound(res, 'Carbon Transaction');
+}
+
+export async function update(req: Request, res: Response) {
+  const row = await svc.updateCarbonTransaction(req.user!.orgId, req.params['id'] as string, req.body as UpdateCarbonTransactionBody);
+  return row ? ok(res, row) : notFound(res, 'Carbon Transaction');
+}

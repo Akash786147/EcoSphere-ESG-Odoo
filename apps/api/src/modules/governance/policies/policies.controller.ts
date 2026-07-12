@@ -42,3 +42,8 @@ export async function ackStatus(req: Request, res: Response) {
   const data = await svc.getPolicyAckStatus(req.user!.orgId, (req.params['id'] as string));
   return ok(res, data);
 }
+
+export async function remove(req: Request, res: Response) {
+  const row = await svc.deletePolicy(req.user!.orgId, req.params['id'] as string);
+  return row ? ok(res, row) : notFound(res, 'Policy');
+}

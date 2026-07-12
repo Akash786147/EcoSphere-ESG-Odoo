@@ -102,3 +102,8 @@ export async function getPolicyAckStatus(orgId: string, policyId: string) {
   const acked = Number(ackCount?.count ?? 0);
   return { total, acknowledged: acked, pending: total - acked, pct: total > 0 ? Math.round((acked / total) * 100) : 0 };
 }
+
+export async function deletePolicy(orgId: string, id: string) {
+  const [row] = await db.delete(esgPolicies).where(and(eq(esgPolicies.organizationId, orgId), eq(esgPolicies.id, id))).returning();
+  return row ?? null;
+}

@@ -16,6 +16,11 @@ export async function listRewards(orgId: string, req: Request) {
   return { rows, meta: buildMeta(page, limit, Number(c?.count ?? 0)) };
 }
 
+export async function getReward(orgId: string, id: string) {
+  const [row] = await db.select().from(rewards).where(and(eq(rewards.organizationId, orgId), eq(rewards.id, id))).limit(1);
+  return row ?? null;
+}
+
 export async function createReward(orgId: string, body: CreateRewardBody) {
   const [row] = await db.insert(rewards).values({ ...body, organizationId: orgId }).returning();
   return row;
@@ -27,6 +32,11 @@ export async function updateReward(orgId: string, id: string, body: UpdateReward
     .set(body)
     .where(and(eq(rewards.id, id), eq(rewards.organizationId, orgId)))
     .returning();
+  return row ?? null;
+}
+
+export async function deleteReward(orgId: string, id: string) {
+  const [row] = await db.delete(rewards).where(and(eq(rewards.organizationId, orgId), eq(rewards.id, id))).returning();
   return row ?? null;
 }
 

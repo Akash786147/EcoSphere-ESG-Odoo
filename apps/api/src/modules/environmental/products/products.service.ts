@@ -49,3 +49,8 @@ export async function deleteProduct(orgId: string, id: string) {
     .returning();
   return row ?? null;
 }
+
+export async function getProduct(orgId: string, id: string) {
+  const [row] = await db.select().from(productEsgProfiles).where(and(eq(productEsgProfiles.organizationId, orgId), eq(productEsgProfiles.id, id))).limit(1);
+  return row ?? null;
+}

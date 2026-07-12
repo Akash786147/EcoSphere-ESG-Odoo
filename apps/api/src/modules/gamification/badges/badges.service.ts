@@ -56,3 +56,13 @@ export async function awardBadgeManual(orgId: string, badgeId: string, employeeI
     .returning();
   return row;
 }
+
+export async function getBadge(orgId: string, id: string) {
+  const [row] = await db.select().from(badges).where(and(eq(badges.organizationId, orgId), eq(badges.id, id))).limit(1);
+  return row ?? null;
+}
+
+export async function deleteBadge(orgId: string, id: string) {
+  const [row] = await db.delete(badges).where(and(eq(badges.organizationId, orgId), eq(badges.id, id))).returning();
+  return row ?? null;
+}

@@ -49,3 +49,8 @@ export async function completeAudit(orgId: string, id: string) {
     .returning();
   return row ?? null;
 }
+
+export async function deleteAudit(orgId: string, id: string) {
+  const [row] = await db.delete(audits).where(and(eq(audits.organizationId, orgId), eq(audits.id, id))).returning();
+  return row ?? null;
+}

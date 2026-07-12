@@ -22,3 +22,8 @@ export async function remove(req: Request, res: Response) {
   const row = await svc.deleteVendor(req.user!.orgId, (req.params['id'] as string));
   return row ? noContent(res) : notFound(res, 'Vendor');
 }
+
+export async function getOne(req: Request, res: Response) {
+  const row = await svc.getVendor(req.user!.orgId, req.params['id'] as string);
+  return row ? ok(res, row) : notFound(res, 'Vendor');
+}

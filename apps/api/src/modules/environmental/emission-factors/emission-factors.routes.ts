@@ -22,3 +22,5 @@ emissionFactorRoutes.put(
   ctrl.update,
 );
 emissionFactorRoutes.delete('/:id', rbac('ADMIN', 'ESG_OFFICER'), ctrl.remove);
+
+emissionFactorRoutes.put('/:id', rbac('ADMIN', 'ESG_OFFICER'), validate(z.object({ body: UpdateEmissionFactorSchema })), ctrl.update);

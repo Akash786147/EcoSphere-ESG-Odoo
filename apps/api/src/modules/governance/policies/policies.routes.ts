@@ -25,3 +25,7 @@ policyRoutes.put(
 policyRoutes.post('/:id/publish', rbac('ADMIN', 'ESG_OFFICER'), ctrl.publish);
 policyRoutes.post('/:id/retire', rbac('ADMIN', 'ESG_OFFICER'), ctrl.retire);
 policyRoutes.post('/:id/acknowledge', ctrl.acknowledge);
+
+policyRoutes.delete('/:id', rbac('ADMIN', 'ESG_OFFICER'), ctrl.remove);
+
+policyRoutes.put('/:id', rbac('ADMIN', 'ESG_OFFICER'), validate(z.object({ body: UpdatePolicySchema })), ctrl.update);

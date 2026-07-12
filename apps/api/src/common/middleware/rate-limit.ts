@@ -32,7 +32,7 @@ export const authLimiter = rateLimit({
   standardHeaders: 'draft-7',
   legacyHeaders: false,
   store: makeStore('rl:auth:'),
-  message: { error: 'Too many authentication attempts. Try again later.' },
+  message: { error: 'Too many authentication attempts. Try again later.' }
 });
 
 /**

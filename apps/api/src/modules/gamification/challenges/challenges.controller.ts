@@ -47,3 +47,8 @@ export async function reject(req: Request, res: Response) {
   const row = await svc.rejectChallengeParticipation(req.user!.orgId, (req.params['id'] as string), req.user!.sub);
   return row ? ok(res, row) : notFound(res, 'Challenge Participation');
 }
+
+export async function remove(req: Request, res: Response) {
+  const row = await svc.deleteChallenge(req.user!.orgId, req.params['id'] as string);
+  return row ? ok(res, row) : notFound(res, 'Challenge');
+}

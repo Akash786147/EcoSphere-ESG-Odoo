@@ -30,3 +30,7 @@ challengeRoutes.patch(
 );
 challengeRoutes.post('/participations/:id/approve', rbac('ADMIN', 'ESG_OFFICER', 'DEPT_HEAD'), ctrl.approve);
 challengeRoutes.post('/participations/:id/reject', rbac('ADMIN', 'ESG_OFFICER', 'DEPT_HEAD'), ctrl.reject);
+
+challengeRoutes.delete('/:id', rbac('ADMIN', 'ESG_OFFICER'), ctrl.remove);
+
+challengeRoutes.put('/:id', rbac('ADMIN', 'ESG_OFFICER'), validate(z.object({ body: UpdateChallengeSchema })), ctrl.update);

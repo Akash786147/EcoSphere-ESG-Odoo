@@ -37,3 +37,8 @@ export async function deleteVendor(orgId: string, id: string) {
     .returning();
   return row ?? null;
 }
+
+export async function getVendor(orgId: string, id: string) {
+  const [row] = await db.select().from(vendors).where(and(eq(vendors.organizationId, orgId), eq(vendors.id, id))).limit(1);
+  return row ?? null;
+}

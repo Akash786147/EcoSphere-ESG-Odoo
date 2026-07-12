@@ -42,3 +42,8 @@ export async function close(req: Request, res: Response) {
   const row = await svc.closeIssue(req.user!.orgId, (req.params['id'] as string));
   return row ? ok(res, row) : notFound(res, 'Compliance Issue');
 }
+
+export async function remove(req: Request, res: Response) {
+  const row = await svc.deleteComplianceIssue(req.user!.orgId, req.params['id'] as string);
+  return row ? ok(res, row) : notFound(res, 'Compliance Issue');
+}

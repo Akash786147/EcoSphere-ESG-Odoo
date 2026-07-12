@@ -60,3 +60,18 @@ export async function getCarbonSummary(orgId: string) {
   }
   return { totalCo2e: total, byScope, byDepartment: byDept };
 }
+
+export async function getCarbonTransaction(orgId: string, id: string) {
+  const [row] = await db.select().from(carbonTransactions).where(and(eq(carbonTransactions.organizationId, orgId), eq(carbonTransactions.id, id))).limit(1);
+  return row ?? null;
+}
+
+export async function deleteCarbonTransaction(orgId: string, id: string) {
+  const [row] = await db.delete(carbonTransactions).where(and(eq(carbonTransactions.organizationId, orgId), eq(carbonTransactions.id, id))).returning();
+  return row ?? null;
+}
+
+export async function updateCarbonTransaction(orgId: string, id: string, body: UpdateCarbonTransactionBody) {
+  const [row] = await db.update(carbonTransactions).set(body).where(and(eq(carbonTransactions.organizationId, orgId), eq(carbonTransactions.id, id))).returning();
+  return row ?? null;
+}

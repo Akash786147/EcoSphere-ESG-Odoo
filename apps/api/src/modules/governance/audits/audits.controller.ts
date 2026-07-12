@@ -27,3 +27,8 @@ export async function complete(req: Request, res: Response) {
   const row = await svc.completeAudit(req.user!.orgId, (req.params['id'] as string));
   return row ? ok(res, row) : notFound(res, 'Audit');
 }
+
+export async function remove(req: Request, res: Response) {
+  const row = await svc.deleteAudit(req.user!.orgId, req.params['id'] as string);
+  return row ? ok(res, row) : notFound(res, 'Audit');
+}

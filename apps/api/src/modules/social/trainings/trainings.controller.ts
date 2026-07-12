@@ -27,3 +27,13 @@ export async function updateProgress(req: Request, res: Response) {
   const row = await svc.updateTrainingProgress(req.user!.orgId, (req.params['id'] as string), req.body as UpdateProgressBody);
   return row ? ok(res, row) : notFound(res, 'Training Completion');
 }
+
+export async function getOne(req: Request, res: Response) {
+  const row = await svc.getTraining(req.user!.orgId, req.params['id'] as string);
+  return row ? ok(res, row) : notFound(res, 'Training');
+}
+
+export async function remove(req: Request, res: Response) {
+  const row = await svc.deleteTraining(req.user!.orgId, req.params['id'] as string);
+  return row ? ok(res, row) : notFound(res, 'Training');
+}

@@ -39,3 +39,8 @@ export async function deleteCategory(orgId: string, id: string) {
     .returning();
   return row ?? null;
 }
+
+export async function getCategory(orgId: string, id: string) {
+  const [row] = await db.select().from(categories).where(and(eq(categories.organizationId, orgId), eq(categories.id, id))).limit(1);
+  return row ?? null;
+}

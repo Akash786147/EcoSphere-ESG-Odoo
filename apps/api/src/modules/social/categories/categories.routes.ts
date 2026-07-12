@@ -8,6 +8,7 @@ import { CreateCategorySchema, UpdateCategorySchema } from './categories.schema.
 export const categoryRoutes = Router();
 
 categoryRoutes.get('/', ctrl.list);
+categoryRoutes.get('/:id', ctrl.getOne);
 categoryRoutes.post(
   '/',
   rbac('ADMIN', 'ESG_OFFICER'),
@@ -21,3 +22,5 @@ categoryRoutes.put(
   ctrl.update,
 );
 categoryRoutes.delete('/:id', rbac('ADMIN'), ctrl.remove);
+
+categoryRoutes.put('/:id', rbac('ADMIN', 'ESG_OFFICER'), validate(z.object({ body: UpdateCategorySchema })), ctrl.update);

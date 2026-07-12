@@ -8,6 +8,7 @@ import { CreateCarbonTransactionSchema } from './carbon-transactions.schema.js';
 export const carbonTransactionRoutes = Router();
 
 carbonTransactionRoutes.get('/', ctrl.list);
+carbonTransactionRoutes.get('/:id', ctrl.getOne);
 carbonTransactionRoutes.post(
   '/',
   rbac('ADMIN', 'ESG_OFFICER'),
@@ -15,3 +16,6 @@ carbonTransactionRoutes.post(
   ctrl.create,
 );
 carbonTransactionRoutes.get('/summary', ctrl.getSummary);
+
+carbonTransactionRoutes.delete('/:id', rbac('ADMIN', 'ESG_OFFICER'), ctrl.remove);
+

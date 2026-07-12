@@ -3,7 +3,7 @@ import { db } from '../../../common/db/db.js';
 import { erpOperations, emissionFactors, carbonTransactions } from '../../../common/db/schema/index.js';
 import { parsePagination, buildMeta } from '../../../common/lib/pagination.js';
 import type { Request } from 'express';
-import type { CreateErpOperationBody } from './erp-operations.schema.js';
+import type { CreateErpOperationBody,UpdateErpOperationBody } from './erp-operations.schema.js';
 
 export async function listErpOperations(orgId: string, req: Request) {
   const { page, limit, offset } = parsePagination(req);
@@ -77,4 +77,20 @@ export async function autoCalculateEmission(
     entryMode: 'AUTO',
     transactionDate: new Date().toISOString().split('T')[0]!,
   });
+}
+
+export async function deleteErpOperation(orgId: string, id: string) {
+  const [row] = await db.delete(erpOperations).where(and(eq(erpOperations.organizationId, orgId), eq(erpOperations.id, id))).returning();
+  return row ?? null;
+}
+
+export async function updateErpOperation(orgId: string, id: string, body: UpdateErpOperationBody) {
+  const { quantity, amount, ...rest } = body;
+  const payload = {
+    ...rest,
+    ...(quantity !== undefined && { quantity: String(quantity) }),
+    ...(amount !== undefined && { amount: String(amount) }),
+  };
+  const [row] = await db.update(erpOperations).set(payload).where(and(eq(erpOperations.organizationId, orgId), eq(erpOperations.id, id))).returning();
+  return row ?? null;
 }
