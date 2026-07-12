@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import { verifyToken, type AuthPayload } from '../lib/auth.js';
+import { verifyAccessToken } from '../lib/auth.js';
 import { logger } from '../config/logger.js';
+import type { AuthPayload } from '../types/auth.types.js';
 
 declare global {
   namespace Express {
@@ -10,20 +11,23 @@ declare global {
   }
 }
 
-export async function authenticate(req: Request, res: Response, next: NextFunction): Promise<void> {
+export async function authenticate(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> {
   const authHeader = req.headers.authorization;
   if (!authHeader?.startsWith('Bearer ')) {
-    res.status(401).json({ error: 'Missing or invalid authorization header' });
+    res.status(401).json({ error: 'Missing or invalid Authorization header' });
     return;
   }
 
   const token = authHeader.split(' ')[1];
   try {
-    const payload = await verifyToken(token!);
-    req.user = payload;
+    req.user = await verifyAccessToken(token!);
     next();
   } catch (err) {
-    logger.warn({ err }, 'Failed token verification');
-    res.status(401).json({ error: 'Invalid or expired token' });
+    logger.warn({ err }, 'Access token verification failed');
+    res.status(401).json({ error: 'Invalid or expired access token' });
   }
 }

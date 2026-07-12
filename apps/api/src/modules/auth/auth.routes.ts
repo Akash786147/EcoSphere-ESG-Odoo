@@ -1,35 +1,22 @@
 import { Router } from 'express';
-import { validate } from '../../common/middleware/validate.js';
 import { z } from 'zod';
-import * as authController from './auth.controller.js';
-import { LoginRequestSchema, LoginResponseSchema } from './auth.schema.js';
-import { registry, ErrorSchema } from '../../common/lib/openapi.js';
+import { validate } from '../../common/middleware/validate.js';
+import { authenticate } from '../../common/middleware/authenticate.js';
+import { authLimiter } from '../../common/middleware/rate-limit.js';
+import * as ctrl from './auth.controller.js';
+import {
+  LoginBodySchema,
+  SignupBodySchema,
+  RefreshBodySchema,
+} from './auth.schema.js';
 
 export const authRoutes = Router();
 
-registry.registerPath({
-  method: 'post',
-  path: '/api/v1/auth/login',
-  tags: ['Auth'],
-  summary: 'Login to the platform',
-  request: {
-    body: {
-      content: {
-        'application/json': {
-          schema: LoginRequestSchema,
-        },
-      },
-    },
-  },
-  responses: {
-    200: {
-      description: 'Successful login',
-      content: { 'application/json': { schema: LoginResponseSchema } },
-    },
-    400: { description: 'Validation Error', content: { 'application/json': { schema: ErrorSchema } } },
-    401: { description: 'Unauthorized', content: { 'application/json': { schema: ErrorSchema } } },
-  },
-});
+// Public — auth limiter applies
+authRoutes.post('/signup', authLimiter, validate(z.object({ body: SignupBodySchema })), ctrl.signup);
+authRoutes.post('/login', authLimiter, validate(z.object({ body: LoginBodySchema })), ctrl.login);
+authRoutes.post('/refresh', validate(z.object({ body: RefreshBodySchema })), ctrl.refreshToken);
+authRoutes.post('/logout', validate(z.object({ body: RefreshBodySchema })), ctrl.logout);
 
-authRoutes.post('/login', validate(z.object({ body: LoginRequestSchema })), authController.login);
-authRoutes.post('/refresh', authController.refresh);
+// Protected
+authRoutes.get('/me', authenticate, ctrl.me);
