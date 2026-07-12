@@ -1,0 +1,3 @@
+# Scoring: pluggable per-pillar scorers, constants in org settings
+
+Department ESG scores are produced by a scoring engine that iterates pluggable `Scorer` implementations — one per pillar (Environmental, Social, Governance), each owned by its pillar's package and reading only that pillar's tables, returning 0–100. The engine applies org-configured pillar weights (default 40/30/30) and stores results as periodic snapshots for trend reporting. Formula constants (blend ratios, severity penalties, neutral scores) live in org settings, not code. Chosen over a single hardcoded calculation (no modularity to show, harder to extend) and over an admin-facing rules engine (weeks of work, high demo risk).
