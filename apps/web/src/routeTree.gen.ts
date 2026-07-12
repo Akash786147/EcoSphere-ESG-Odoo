@@ -12,7 +12,14 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
+import { Route as DashboardSocialTrainingCompletionRouteImport } from './routes/dashboard/social/training-completion'
+import { Route as DashboardSocialOverviewRouteImport } from './routes/dashboard/social/overview'
+import { Route as DashboardSocialEmployeeParticipationRouteImport } from './routes/dashboard/social/employee-participation'
+import { Route as DashboardSocialDiversityMetricsRouteImport } from './routes/dashboard/social/diversity-metrics'
+import { Route as DashboardGovernancePolicyAcknowledgementsRouteImport } from './routes/dashboard/governance/policy-acknowledgements'
+import { Route as DashboardGovernanceOverviewRouteImport } from './routes/dashboard/governance/overview'
 import { Route as DashboardGamificationRewardsRouteImport } from './routes/dashboard/gamification/rewards'
 import { Route as DashboardGamificationRedemptionsRouteImport } from './routes/dashboard/gamification/redemptions'
 import { Route as DashboardGamificationParticipationApprovalsRouteImport } from './routes/dashboard/gamification/participation-approvals'
@@ -28,6 +35,14 @@ import { Route as DashboardAdministrationNotificationSettingsRouteImport } from 
 import { Route as DashboardAdministrationEsgConfigurationRouteImport } from './routes/dashboard/administration/esg-configuration'
 import { Route as DashboardAdministrationDepartmentsRouteImport } from './routes/dashboard/administration/departments'
 import { Route as DashboardAdministrationCategoriesRouteImport } from './routes/dashboard/administration/categories'
+import { Route as DashboardSocialCsrActivitiesIndexRouteImport } from './routes/dashboard/social/csr-activities/index'
+import { Route as DashboardGovernancePoliciesIndexRouteImport } from './routes/dashboard/governance/policies/index'
+import { Route as DashboardGovernanceComplianceIssuesIndexRouteImport } from './routes/dashboard/governance/compliance-issues/index'
+import { Route as DashboardGovernanceAuditsIndexRouteImport } from './routes/dashboard/governance/audits/index'
+import { Route as DashboardSocialCsrActivitiesActivityIdRouteImport } from './routes/dashboard/social/csr-activities/$activityId'
+import { Route as DashboardGovernancePoliciesPolicyIdRouteImport } from './routes/dashboard/governance/policies/$policyId'
+import { Route as DashboardGovernanceComplianceIssuesIssueIdRouteImport } from './routes/dashboard/governance/compliance-issues/$issueId'
+import { Route as DashboardGovernanceAuditsAuditIdRouteImport } from './routes/dashboard/governance/audits/$auditId'
 
 const ForgetPasswordLazyRouteImport = createFileRoute('/forget-password')()
 const AuthLazyRouteImport = createFileRoute('/auth')()
@@ -54,6 +69,11 @@ const DashboardRoute = DashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/dashboard.lazy').then((d) => d.Route))
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -78,6 +98,41 @@ const AuthLoginLazyRoute = AuthLoginLazyRouteImport.update({
   path: '/login',
   getParentRoute: () => AuthLazyRoute,
 } as any).lazy(() => import('./routes/auth/login.lazy').then((d) => d.Route))
+const DashboardSocialTrainingCompletionRoute =
+  DashboardSocialTrainingCompletionRouteImport.update({
+    id: '/social/training-completion',
+    path: '/social/training-completion',
+    getParentRoute: () => DashboardRoute,
+  } as any)
+const DashboardSocialOverviewRoute = DashboardSocialOverviewRouteImport.update({
+  id: '/social/overview',
+  path: '/social/overview',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardSocialEmployeeParticipationRoute =
+  DashboardSocialEmployeeParticipationRouteImport.update({
+    id: '/social/employee-participation',
+    path: '/social/employee-participation',
+    getParentRoute: () => DashboardRoute,
+  } as any)
+const DashboardSocialDiversityMetricsRoute =
+  DashboardSocialDiversityMetricsRouteImport.update({
+    id: '/social/diversity-metrics',
+    path: '/social/diversity-metrics',
+    getParentRoute: () => DashboardRoute,
+  } as any)
+const DashboardGovernancePolicyAcknowledgementsRoute =
+  DashboardGovernancePolicyAcknowledgementsRouteImport.update({
+    id: '/governance/policy-acknowledgements',
+    path: '/governance/policy-acknowledgements',
+    getParentRoute: () => DashboardRoute,
+  } as any)
+const DashboardGovernanceOverviewRoute =
+  DashboardGovernanceOverviewRouteImport.update({
+    id: '/governance/overview',
+    path: '/governance/overview',
+    getParentRoute: () => DashboardRoute,
+  } as any)
 const DashboardGamificationRewardsRoute =
   DashboardGamificationRewardsRouteImport.update({
     id: '/gamification/rewards',
@@ -168,8 +223,57 @@ const DashboardAdministrationCategoriesRoute =
     path: '/administration/categories',
     getParentRoute: () => DashboardRoute,
   } as any)
+const DashboardSocialCsrActivitiesIndexRoute =
+  DashboardSocialCsrActivitiesIndexRouteImport.update({
+    id: '/social/csr-activities/',
+    path: '/social/csr-activities/',
+    getParentRoute: () => DashboardRoute,
+  } as any)
+const DashboardGovernancePoliciesIndexRoute =
+  DashboardGovernancePoliciesIndexRouteImport.update({
+    id: '/governance/policies/',
+    path: '/governance/policies/',
+    getParentRoute: () => DashboardRoute,
+  } as any)
+const DashboardGovernanceComplianceIssuesIndexRoute =
+  DashboardGovernanceComplianceIssuesIndexRouteImport.update({
+    id: '/governance/compliance-issues/',
+    path: '/governance/compliance-issues/',
+    getParentRoute: () => DashboardRoute,
+  } as any)
+const DashboardGovernanceAuditsIndexRoute =
+  DashboardGovernanceAuditsIndexRouteImport.update({
+    id: '/governance/audits/',
+    path: '/governance/audits/',
+    getParentRoute: () => DashboardRoute,
+  } as any)
+const DashboardSocialCsrActivitiesActivityIdRoute =
+  DashboardSocialCsrActivitiesActivityIdRouteImport.update({
+    id: '/social/csr-activities/$activityId',
+    path: '/social/csr-activities/$activityId',
+    getParentRoute: () => DashboardRoute,
+  } as any)
+const DashboardGovernancePoliciesPolicyIdRoute =
+  DashboardGovernancePoliciesPolicyIdRouteImport.update({
+    id: '/governance/policies/$policyId',
+    path: '/governance/policies/$policyId',
+    getParentRoute: () => DashboardRoute,
+  } as any)
+const DashboardGovernanceComplianceIssuesIssueIdRoute =
+  DashboardGovernanceComplianceIssuesIssueIdRouteImport.update({
+    id: '/governance/compliance-issues/$issueId',
+    path: '/governance/compliance-issues/$issueId',
+    getParentRoute: () => DashboardRoute,
+  } as any)
+const DashboardGovernanceAuditsAuditIdRoute =
+  DashboardGovernanceAuditsAuditIdRouteImport.update({
+    id: '/governance/audits/$auditId',
+    path: '/governance/audits/$auditId',
+    getParentRoute: () => DashboardRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/auth': typeof AuthLazyRouteWithChildren
   '/forget-password': typeof ForgetPasswordLazyRoute
@@ -192,8 +296,23 @@ export interface FileRoutesByFullPath {
   '/dashboard/gamification/participation-approvals': typeof DashboardGamificationParticipationApprovalsRoute
   '/dashboard/gamification/redemptions': typeof DashboardGamificationRedemptionsRoute
   '/dashboard/gamification/rewards': typeof DashboardGamificationRewardsRoute
+  '/dashboard/governance/overview': typeof DashboardGovernanceOverviewRoute
+  '/dashboard/governance/policy-acknowledgements': typeof DashboardGovernancePolicyAcknowledgementsRoute
+  '/dashboard/social/diversity-metrics': typeof DashboardSocialDiversityMetricsRoute
+  '/dashboard/social/employee-participation': typeof DashboardSocialEmployeeParticipationRoute
+  '/dashboard/social/overview': typeof DashboardSocialOverviewRoute
+  '/dashboard/social/training-completion': typeof DashboardSocialTrainingCompletionRoute
+  '/dashboard/governance/audits/$auditId': typeof DashboardGovernanceAuditsAuditIdRoute
+  '/dashboard/governance/compliance-issues/$issueId': typeof DashboardGovernanceComplianceIssuesIssueIdRoute
+  '/dashboard/governance/policies/$policyId': typeof DashboardGovernancePoliciesPolicyIdRoute
+  '/dashboard/social/csr-activities/$activityId': typeof DashboardSocialCsrActivitiesActivityIdRoute
+  '/dashboard/governance/audits/': typeof DashboardGovernanceAuditsIndexRoute
+  '/dashboard/governance/compliance-issues/': typeof DashboardGovernanceComplianceIssuesIndexRoute
+  '/dashboard/governance/policies/': typeof DashboardGovernancePoliciesIndexRoute
+  '/dashboard/social/csr-activities/': typeof DashboardSocialCsrActivitiesIndexRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '/auth': typeof AuthLazyRouteWithChildren
   '/forget-password': typeof ForgetPasswordLazyRoute
   '/auth/login': typeof AuthLoginLazyRoute
@@ -215,9 +334,24 @@ export interface FileRoutesByTo {
   '/dashboard/gamification/participation-approvals': typeof DashboardGamificationParticipationApprovalsRoute
   '/dashboard/gamification/redemptions': typeof DashboardGamificationRedemptionsRoute
   '/dashboard/gamification/rewards': typeof DashboardGamificationRewardsRoute
+  '/dashboard/governance/overview': typeof DashboardGovernanceOverviewRoute
+  '/dashboard/governance/policy-acknowledgements': typeof DashboardGovernancePolicyAcknowledgementsRoute
+  '/dashboard/social/diversity-metrics': typeof DashboardSocialDiversityMetricsRoute
+  '/dashboard/social/employee-participation': typeof DashboardSocialEmployeeParticipationRoute
+  '/dashboard/social/overview': typeof DashboardSocialOverviewRoute
+  '/dashboard/social/training-completion': typeof DashboardSocialTrainingCompletionRoute
+  '/dashboard/governance/audits/$auditId': typeof DashboardGovernanceAuditsAuditIdRoute
+  '/dashboard/governance/compliance-issues/$issueId': typeof DashboardGovernanceComplianceIssuesIssueIdRoute
+  '/dashboard/governance/policies/$policyId': typeof DashboardGovernancePoliciesPolicyIdRoute
+  '/dashboard/social/csr-activities/$activityId': typeof DashboardSocialCsrActivitiesActivityIdRoute
+  '/dashboard/governance/audits': typeof DashboardGovernanceAuditsIndexRoute
+  '/dashboard/governance/compliance-issues': typeof DashboardGovernanceComplianceIssuesIndexRoute
+  '/dashboard/governance/policies': typeof DashboardGovernancePoliciesIndexRoute
+  '/dashboard/social/csr-activities': typeof DashboardSocialCsrActivitiesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/auth': typeof AuthLazyRouteWithChildren
   '/forget-password': typeof ForgetPasswordLazyRoute
@@ -240,10 +374,25 @@ export interface FileRoutesById {
   '/dashboard/gamification/participation-approvals': typeof DashboardGamificationParticipationApprovalsRoute
   '/dashboard/gamification/redemptions': typeof DashboardGamificationRedemptionsRoute
   '/dashboard/gamification/rewards': typeof DashboardGamificationRewardsRoute
+  '/dashboard/governance/overview': typeof DashboardGovernanceOverviewRoute
+  '/dashboard/governance/policy-acknowledgements': typeof DashboardGovernancePolicyAcknowledgementsRoute
+  '/dashboard/social/diversity-metrics': typeof DashboardSocialDiversityMetricsRoute
+  '/dashboard/social/employee-participation': typeof DashboardSocialEmployeeParticipationRoute
+  '/dashboard/social/overview': typeof DashboardSocialOverviewRoute
+  '/dashboard/social/training-completion': typeof DashboardSocialTrainingCompletionRoute
+  '/dashboard/governance/audits/$auditId': typeof DashboardGovernanceAuditsAuditIdRoute
+  '/dashboard/governance/compliance-issues/$issueId': typeof DashboardGovernanceComplianceIssuesIssueIdRoute
+  '/dashboard/governance/policies/$policyId': typeof DashboardGovernancePoliciesPolicyIdRoute
+  '/dashboard/social/csr-activities/$activityId': typeof DashboardSocialCsrActivitiesActivityIdRoute
+  '/dashboard/governance/audits/': typeof DashboardGovernanceAuditsIndexRoute
+  '/dashboard/governance/compliance-issues/': typeof DashboardGovernanceComplianceIssuesIndexRoute
+  '/dashboard/governance/policies/': typeof DashboardGovernancePoliciesIndexRoute
+  '/dashboard/social/csr-activities/': typeof DashboardSocialCsrActivitiesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | '/dashboard'
     | '/auth'
     | '/forget-password'
@@ -266,8 +415,23 @@ export interface FileRouteTypes {
     | '/dashboard/gamification/participation-approvals'
     | '/dashboard/gamification/redemptions'
     | '/dashboard/gamification/rewards'
+    | '/dashboard/governance/overview'
+    | '/dashboard/governance/policy-acknowledgements'
+    | '/dashboard/social/diversity-metrics'
+    | '/dashboard/social/employee-participation'
+    | '/dashboard/social/overview'
+    | '/dashboard/social/training-completion'
+    | '/dashboard/governance/audits/$auditId'
+    | '/dashboard/governance/compliance-issues/$issueId'
+    | '/dashboard/governance/policies/$policyId'
+    | '/dashboard/social/csr-activities/$activityId'
+    | '/dashboard/governance/audits/'
+    | '/dashboard/governance/compliance-issues/'
+    | '/dashboard/governance/policies/'
+    | '/dashboard/social/csr-activities/'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/'
     | '/auth'
     | '/forget-password'
     | '/auth/login'
@@ -289,8 +453,23 @@ export interface FileRouteTypes {
     | '/dashboard/gamification/participation-approvals'
     | '/dashboard/gamification/redemptions'
     | '/dashboard/gamification/rewards'
+    | '/dashboard/governance/overview'
+    | '/dashboard/governance/policy-acknowledgements'
+    | '/dashboard/social/diversity-metrics'
+    | '/dashboard/social/employee-participation'
+    | '/dashboard/social/overview'
+    | '/dashboard/social/training-completion'
+    | '/dashboard/governance/audits/$auditId'
+    | '/dashboard/governance/compliance-issues/$issueId'
+    | '/dashboard/governance/policies/$policyId'
+    | '/dashboard/social/csr-activities/$activityId'
+    | '/dashboard/governance/audits'
+    | '/dashboard/governance/compliance-issues'
+    | '/dashboard/governance/policies'
+    | '/dashboard/social/csr-activities'
   id:
     | '__root__'
+    | '/'
     | '/dashboard'
     | '/auth'
     | '/forget-password'
@@ -313,9 +492,24 @@ export interface FileRouteTypes {
     | '/dashboard/gamification/participation-approvals'
     | '/dashboard/gamification/redemptions'
     | '/dashboard/gamification/rewards'
+    | '/dashboard/governance/overview'
+    | '/dashboard/governance/policy-acknowledgements'
+    | '/dashboard/social/diversity-metrics'
+    | '/dashboard/social/employee-participation'
+    | '/dashboard/social/overview'
+    | '/dashboard/social/training-completion'
+    | '/dashboard/governance/audits/$auditId'
+    | '/dashboard/governance/compliance-issues/$issueId'
+    | '/dashboard/governance/policies/$policyId'
+    | '/dashboard/social/csr-activities/$activityId'
+    | '/dashboard/governance/audits/'
+    | '/dashboard/governance/compliance-issues/'
+    | '/dashboard/governance/policies/'
+    | '/dashboard/social/csr-activities/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   DashboardRoute: typeof DashboardRouteWithChildren
   AuthLazyRoute: typeof AuthLazyRouteWithChildren
   ForgetPasswordLazyRoute: typeof ForgetPasswordLazyRoute
@@ -342,6 +536,13 @@ declare module '@tanstack/react-router' {
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard/': {
@@ -371,6 +572,48 @@ declare module '@tanstack/react-router' {
       fullPath: '/auth/login'
       preLoaderRoute: typeof AuthLoginLazyRouteImport
       parentRoute: typeof AuthLazyRoute
+    }
+    '/dashboard/social/training-completion': {
+      id: '/dashboard/social/training-completion'
+      path: '/social/training-completion'
+      fullPath: '/dashboard/social/training-completion'
+      preLoaderRoute: typeof DashboardSocialTrainingCompletionRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/social/overview': {
+      id: '/dashboard/social/overview'
+      path: '/social/overview'
+      fullPath: '/dashboard/social/overview'
+      preLoaderRoute: typeof DashboardSocialOverviewRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/social/employee-participation': {
+      id: '/dashboard/social/employee-participation'
+      path: '/social/employee-participation'
+      fullPath: '/dashboard/social/employee-participation'
+      preLoaderRoute: typeof DashboardSocialEmployeeParticipationRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/social/diversity-metrics': {
+      id: '/dashboard/social/diversity-metrics'
+      path: '/social/diversity-metrics'
+      fullPath: '/dashboard/social/diversity-metrics'
+      preLoaderRoute: typeof DashboardSocialDiversityMetricsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/governance/policy-acknowledgements': {
+      id: '/dashboard/governance/policy-acknowledgements'
+      path: '/governance/policy-acknowledgements'
+      fullPath: '/dashboard/governance/policy-acknowledgements'
+      preLoaderRoute: typeof DashboardGovernancePolicyAcknowledgementsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/governance/overview': {
+      id: '/dashboard/governance/overview'
+      path: '/governance/overview'
+      fullPath: '/dashboard/governance/overview'
+      preLoaderRoute: typeof DashboardGovernanceOverviewRouteImport
+      parentRoute: typeof DashboardRoute
     }
     '/dashboard/gamification/rewards': {
       id: '/dashboard/gamification/rewards'
@@ -477,6 +720,62 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardAdministrationCategoriesRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/dashboard/social/csr-activities/': {
+      id: '/dashboard/social/csr-activities/'
+      path: '/social/csr-activities'
+      fullPath: '/dashboard/social/csr-activities/'
+      preLoaderRoute: typeof DashboardSocialCsrActivitiesIndexRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/governance/policies/': {
+      id: '/dashboard/governance/policies/'
+      path: '/governance/policies'
+      fullPath: '/dashboard/governance/policies/'
+      preLoaderRoute: typeof DashboardGovernancePoliciesIndexRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/governance/compliance-issues/': {
+      id: '/dashboard/governance/compliance-issues/'
+      path: '/governance/compliance-issues'
+      fullPath: '/dashboard/governance/compliance-issues/'
+      preLoaderRoute: typeof DashboardGovernanceComplianceIssuesIndexRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/governance/audits/': {
+      id: '/dashboard/governance/audits/'
+      path: '/governance/audits'
+      fullPath: '/dashboard/governance/audits/'
+      preLoaderRoute: typeof DashboardGovernanceAuditsIndexRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/social/csr-activities/$activityId': {
+      id: '/dashboard/social/csr-activities/$activityId'
+      path: '/social/csr-activities/$activityId'
+      fullPath: '/dashboard/social/csr-activities/$activityId'
+      preLoaderRoute: typeof DashboardSocialCsrActivitiesActivityIdRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/governance/policies/$policyId': {
+      id: '/dashboard/governance/policies/$policyId'
+      path: '/governance/policies/$policyId'
+      fullPath: '/dashboard/governance/policies/$policyId'
+      preLoaderRoute: typeof DashboardGovernancePoliciesPolicyIdRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/governance/compliance-issues/$issueId': {
+      id: '/dashboard/governance/compliance-issues/$issueId'
+      path: '/governance/compliance-issues/$issueId'
+      fullPath: '/dashboard/governance/compliance-issues/$issueId'
+      preLoaderRoute: typeof DashboardGovernanceComplianceIssuesIssueIdRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/governance/audits/$auditId': {
+      id: '/dashboard/governance/audits/$auditId'
+      path: '/governance/audits/$auditId'
+      fullPath: '/dashboard/governance/audits/$auditId'
+      preLoaderRoute: typeof DashboardGovernanceAuditsAuditIdRouteImport
+      parentRoute: typeof DashboardRoute
+    }
   }
 }
 
@@ -498,6 +797,20 @@ interface DashboardRouteChildren {
   DashboardGamificationParticipationApprovalsRoute: typeof DashboardGamificationParticipationApprovalsRoute
   DashboardGamificationRedemptionsRoute: typeof DashboardGamificationRedemptionsRoute
   DashboardGamificationRewardsRoute: typeof DashboardGamificationRewardsRoute
+  DashboardGovernanceOverviewRoute: typeof DashboardGovernanceOverviewRoute
+  DashboardGovernancePolicyAcknowledgementsRoute: typeof DashboardGovernancePolicyAcknowledgementsRoute
+  DashboardSocialDiversityMetricsRoute: typeof DashboardSocialDiversityMetricsRoute
+  DashboardSocialEmployeeParticipationRoute: typeof DashboardSocialEmployeeParticipationRoute
+  DashboardSocialOverviewRoute: typeof DashboardSocialOverviewRoute
+  DashboardSocialTrainingCompletionRoute: typeof DashboardSocialTrainingCompletionRoute
+  DashboardGovernanceAuditsAuditIdRoute: typeof DashboardGovernanceAuditsAuditIdRoute
+  DashboardGovernanceComplianceIssuesIssueIdRoute: typeof DashboardGovernanceComplianceIssuesIssueIdRoute
+  DashboardGovernancePoliciesPolicyIdRoute: typeof DashboardGovernancePoliciesPolicyIdRoute
+  DashboardSocialCsrActivitiesActivityIdRoute: typeof DashboardSocialCsrActivitiesActivityIdRoute
+  DashboardGovernanceAuditsIndexRoute: typeof DashboardGovernanceAuditsIndexRoute
+  DashboardGovernanceComplianceIssuesIndexRoute: typeof DashboardGovernanceComplianceIssuesIndexRoute
+  DashboardGovernancePoliciesIndexRoute: typeof DashboardGovernancePoliciesIndexRoute
+  DashboardSocialCsrActivitiesIndexRoute: typeof DashboardSocialCsrActivitiesIndexRoute
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
@@ -527,6 +840,28 @@ const DashboardRouteChildren: DashboardRouteChildren = {
     DashboardGamificationParticipationApprovalsRoute,
   DashboardGamificationRedemptionsRoute: DashboardGamificationRedemptionsRoute,
   DashboardGamificationRewardsRoute: DashboardGamificationRewardsRoute,
+  DashboardGovernanceOverviewRoute: DashboardGovernanceOverviewRoute,
+  DashboardGovernancePolicyAcknowledgementsRoute:
+    DashboardGovernancePolicyAcknowledgementsRoute,
+  DashboardSocialDiversityMetricsRoute: DashboardSocialDiversityMetricsRoute,
+  DashboardSocialEmployeeParticipationRoute:
+    DashboardSocialEmployeeParticipationRoute,
+  DashboardSocialOverviewRoute: DashboardSocialOverviewRoute,
+  DashboardSocialTrainingCompletionRoute:
+    DashboardSocialTrainingCompletionRoute,
+  DashboardGovernanceAuditsAuditIdRoute: DashboardGovernanceAuditsAuditIdRoute,
+  DashboardGovernanceComplianceIssuesIssueIdRoute:
+    DashboardGovernanceComplianceIssuesIssueIdRoute,
+  DashboardGovernancePoliciesPolicyIdRoute:
+    DashboardGovernancePoliciesPolicyIdRoute,
+  DashboardSocialCsrActivitiesActivityIdRoute:
+    DashboardSocialCsrActivitiesActivityIdRoute,
+  DashboardGovernanceAuditsIndexRoute: DashboardGovernanceAuditsIndexRoute,
+  DashboardGovernanceComplianceIssuesIndexRoute:
+    DashboardGovernanceComplianceIssuesIndexRoute,
+  DashboardGovernancePoliciesIndexRoute: DashboardGovernancePoliciesIndexRoute,
+  DashboardSocialCsrActivitiesIndexRoute:
+    DashboardSocialCsrActivitiesIndexRoute,
 }
 
 const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
@@ -548,6 +883,7 @@ const AuthLazyRouteWithChildren = AuthLazyRoute._addFileChildren(
 )
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   DashboardRoute: DashboardRouteWithChildren,
   AuthLazyRoute: AuthLazyRouteWithChildren,
   ForgetPasswordLazyRoute: ForgetPasswordLazyRoute,
