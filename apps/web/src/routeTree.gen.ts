@@ -76,9 +76,7 @@ const DashboardIndexRoute = DashboardIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => DashboardRoute,
-} as any).lazy(() =>
-  import('./routes/dashboard/index.lazy').then((d) => d.Route),
-)
+} as any)
 const AuthSignupLazyRoute = AuthSignupLazyRouteImport.update({
   id: '/signup',
   path: '/signup',

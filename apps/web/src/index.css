@@ -51,6 +51,40 @@
 }
 
 :root {
+    /* Domain accents */
+    --env: oklch(56% 0.135 145);
+    --env-soft: oklch(94% 0.045 145);
+    --env-soft-fg: oklch(36% 0.1 145);
+
+    --social: oklch(66% 0.135 60);
+    --social-soft: oklch(95% 0.045 63);
+    --social-soft-fg: oklch(44% 0.12 55);
+
+    --governance: oklch(43% 0.13 265);
+    --governance-soft: oklch(94% 0.03 265);
+    --governance-soft-fg: oklch(40% 0.12 265);
+
+    --gamification: oklch(52% 0.12 305);
+    --gamification-soft: oklch(94% 0.035 305);
+    --gamification-soft-fg: oklch(43% 0.11 305);
+
+    --danger: oklch(52% 0.17 25);
+    --danger-soft: oklch(95% 0.04 25);
+    --danger-soft-fg: oklch(45% 0.15 25);
+
+    --warning: oklch(75% 0.14 75);
+    --warning-soft: oklch(96% 0.04 75);
+    --warning-soft-fg: oklch(45% 0.12 75);
+
+    --success: oklch(60% 0.13 145);
+    --success-soft: oklch(95% 0.04 145);
+    --success-soft-fg: oklch(38% 0.1 145);
+    
+    /* Surfaces & Text that shadcn might not map directly */
+    --surface-sunken: oklch(96.3% 0.006 85);
+    --fg: oklch(23% 0.014 100);
+    --fg-secondary: oklch(40% 0.014 100);
+
     --background: oklch(1 0 0);
     --foreground: oklch(0.145 0 0);
     --card: oklch(1 0 0);
@@ -89,6 +123,39 @@
 }
 
 .dark {
+    /* Domain accents (Dark) */
+    --env: oklch(60% 0.135 145);
+    --env-soft: oklch(25% 0.045 145);
+    --env-soft-fg: oklch(75% 0.1 145);
+
+    --social: oklch(70% 0.135 60);
+    --social-soft: oklch(25% 0.045 63);
+    --social-soft-fg: oklch(75% 0.12 55);
+
+    --governance: oklch(50% 0.13 265);
+    --governance-soft: oklch(25% 0.03 265);
+    --governance-soft-fg: oklch(75% 0.12 265);
+
+    --gamification: oklch(60% 0.12 305);
+    --gamification-soft: oklch(25% 0.035 305);
+    --gamification-soft-fg: oklch(75% 0.11 305);
+
+    --danger: oklch(60% 0.17 25);
+    --danger-soft: oklch(25% 0.04 25);
+    --danger-soft-fg: oklch(75% 0.15 25);
+
+    --warning: oklch(80% 0.14 75);
+    --warning-soft: oklch(25% 0.04 75);
+    --warning-soft-fg: oklch(75% 0.12 75);
+
+    --success: oklch(65% 0.13 145);
+    --success-soft: oklch(25% 0.04 145);
+    --success-soft-fg: oklch(75% 0.1 145);
+    
+    --surface-sunken: oklch(15% 0 0);
+    --fg: oklch(98% 0 0);
+    --fg-secondary: oklch(70% 0 0);
+
     --background: oklch(0.145 0 0);
     --foreground: oklch(0.985 0 0);
     --card: oklch(0.205 0 0);
