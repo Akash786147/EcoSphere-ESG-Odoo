@@ -11,7 +11,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as DashboardSettingsRouteImport } from './routes/dashboard/settings'
@@ -46,6 +45,7 @@ import { Route as DashboardGovernanceComplianceIssuesIssueIdRouteImport } from '
 import { Route as DashboardGovernanceAuditsAuditIdRouteImport } from './routes/dashboard/governance/audits/$auditId'
 
 const ForgetPasswordLazyRouteImport = createFileRoute('/forget-password')()
+const DashboardLazyRouteImport = createFileRoute('/dashboard')()
 const AuthLazyRouteImport = createFileRoute('/auth')()
 const AuthSignupLazyRouteImport = createFileRoute('/auth/signup')()
 const AuthLoginLazyRouteImport = createFileRoute('/auth/login')()
@@ -57,16 +57,16 @@ const ForgetPasswordLazyRoute = ForgetPasswordLazyRouteImport.update({
 } as any).lazy(() =>
   import('./routes/forget-password.lazy').then((d) => d.Route),
 )
+const DashboardLazyRoute = DashboardLazyRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any).lazy(() => import('./routes/dashboard.lazy').then((d) => d.Route))
 const AuthLazyRoute = AuthLazyRouteImport.update({
   id: '/auth',
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/auth.lazy').then((d) => d.Route))
-const DashboardRoute = DashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any).lazy(() => import('./routes/dashboard.lazy').then((d) => d.Route))
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -75,7 +75,7 @@ const IndexRoute = IndexRouteImport.update({
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => DashboardRoute,
+  getParentRoute: () => DashboardLazyRoute,
 } as any)
 const AuthSignupLazyRoute = AuthSignupLazyRouteImport.update({
   id: '/signup',
@@ -90,7 +90,7 @@ const AuthLoginLazyRoute = AuthLoginLazyRouteImport.update({
 const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
-  getParentRoute: () => DashboardRoute,
+  getParentRoute: () => DashboardLazyRoute,
 } as any).lazy(() =>
   import('./routes/dashboard/settings.lazy').then((d) => d.Route),
 )
@@ -98,180 +98,180 @@ const DashboardSocialTrainingCompletionRoute =
   DashboardSocialTrainingCompletionRouteImport.update({
     id: '/social/training-completion',
     path: '/social/training-completion',
-    getParentRoute: () => DashboardRoute,
+    getParentRoute: () => DashboardLazyRoute,
   } as any)
 const DashboardSocialOverviewRoute = DashboardSocialOverviewRouteImport.update({
   id: '/social/overview',
   path: '/social/overview',
-  getParentRoute: () => DashboardRoute,
+  getParentRoute: () => DashboardLazyRoute,
 } as any)
 const DashboardSocialEmployeeParticipationRoute =
   DashboardSocialEmployeeParticipationRouteImport.update({
     id: '/social/employee-participation',
     path: '/social/employee-participation',
-    getParentRoute: () => DashboardRoute,
+    getParentRoute: () => DashboardLazyRoute,
   } as any)
 const DashboardSocialDiversityMetricsRoute =
   DashboardSocialDiversityMetricsRouteImport.update({
     id: '/social/diversity-metrics',
     path: '/social/diversity-metrics',
-    getParentRoute: () => DashboardRoute,
+    getParentRoute: () => DashboardLazyRoute,
   } as any)
 const DashboardGovernancePolicyAcknowledgementsRoute =
   DashboardGovernancePolicyAcknowledgementsRouteImport.update({
     id: '/governance/policy-acknowledgements',
     path: '/governance/policy-acknowledgements',
-    getParentRoute: () => DashboardRoute,
+    getParentRoute: () => DashboardLazyRoute,
   } as any)
 const DashboardGovernanceOverviewRoute =
   DashboardGovernanceOverviewRouteImport.update({
     id: '/governance/overview',
     path: '/governance/overview',
-    getParentRoute: () => DashboardRoute,
+    getParentRoute: () => DashboardLazyRoute,
   } as any)
 const DashboardGamificationRewardsRoute =
   DashboardGamificationRewardsRouteImport.update({
     id: '/gamification/rewards',
     path: '/gamification/rewards',
-    getParentRoute: () => DashboardRoute,
+    getParentRoute: () => DashboardLazyRoute,
   } as any)
 const DashboardGamificationRedemptionsRoute =
   DashboardGamificationRedemptionsRouteImport.update({
     id: '/gamification/redemptions',
     path: '/gamification/redemptions',
-    getParentRoute: () => DashboardRoute,
+    getParentRoute: () => DashboardLazyRoute,
   } as any)
 const DashboardGamificationParticipationApprovalsRoute =
   DashboardGamificationParticipationApprovalsRouteImport.update({
     id: '/gamification/participation-approvals',
     path: '/gamification/participation-approvals',
-    getParentRoute: () => DashboardRoute,
+    getParentRoute: () => DashboardLazyRoute,
   } as any)
 const DashboardGamificationLeaderboardRoute =
   DashboardGamificationLeaderboardRouteImport.update({
     id: '/gamification/leaderboard',
     path: '/gamification/leaderboard',
-    getParentRoute: () => DashboardRoute,
+    getParentRoute: () => DashboardLazyRoute,
   } as any)
 const DashboardGamificationChallengesRoute =
   DashboardGamificationChallengesRouteImport.update({
     id: '/gamification/challenges',
     path: '/gamification/challenges',
-    getParentRoute: () => DashboardRoute,
+    getParentRoute: () => DashboardLazyRoute,
   } as any)
 const DashboardGamificationBadgesRoute =
   DashboardGamificationBadgesRouteImport.update({
     id: '/gamification/badges',
     path: '/gamification/badges',
-    getParentRoute: () => DashboardRoute,
+    getParentRoute: () => DashboardLazyRoute,
   } as any)
 const DashboardEnvironmentalSustainabilityGoalsRoute =
   DashboardEnvironmentalSustainabilityGoalsRouteImport.update({
     id: '/environmental/sustainability-goals',
     path: '/environmental/sustainability-goals',
-    getParentRoute: () => DashboardRoute,
+    getParentRoute: () => DashboardLazyRoute,
   } as any)
 const DashboardEnvironmentalProductEsgProfilesRoute =
   DashboardEnvironmentalProductEsgProfilesRouteImport.update({
     id: '/environmental/product-esg-profiles',
     path: '/environmental/product-esg-profiles',
-    getParentRoute: () => DashboardRoute,
+    getParentRoute: () => DashboardLazyRoute,
   } as any)
 const DashboardEnvironmentalOverviewRoute =
   DashboardEnvironmentalOverviewRouteImport.update({
     id: '/environmental/overview',
     path: '/environmental/overview',
-    getParentRoute: () => DashboardRoute,
+    getParentRoute: () => DashboardLazyRoute,
   } as any)
 const DashboardEnvironmentalEmissionFactorsRoute =
   DashboardEnvironmentalEmissionFactorsRouteImport.update({
     id: '/environmental/emission-factors',
     path: '/environmental/emission-factors',
-    getParentRoute: () => DashboardRoute,
+    getParentRoute: () => DashboardLazyRoute,
   } as any)
 const DashboardEnvironmentalCarbonTransactionsRoute =
   DashboardEnvironmentalCarbonTransactionsRouteImport.update({
     id: '/environmental/carbon-transactions',
     path: '/environmental/carbon-transactions',
-    getParentRoute: () => DashboardRoute,
+    getParentRoute: () => DashboardLazyRoute,
   } as any)
 const DashboardAdministrationNotificationSettingsRoute =
   DashboardAdministrationNotificationSettingsRouteImport.update({
     id: '/administration/notification-settings',
     path: '/administration/notification-settings',
-    getParentRoute: () => DashboardRoute,
+    getParentRoute: () => DashboardLazyRoute,
   } as any)
 const DashboardAdministrationEsgConfigurationRoute =
   DashboardAdministrationEsgConfigurationRouteImport.update({
     id: '/administration/esg-configuration',
     path: '/administration/esg-configuration',
-    getParentRoute: () => DashboardRoute,
+    getParentRoute: () => DashboardLazyRoute,
   } as any)
 const DashboardAdministrationDepartmentsRoute =
   DashboardAdministrationDepartmentsRouteImport.update({
     id: '/administration/departments',
     path: '/administration/departments',
-    getParentRoute: () => DashboardRoute,
+    getParentRoute: () => DashboardLazyRoute,
   } as any)
 const DashboardAdministrationCategoriesRoute =
   DashboardAdministrationCategoriesRouteImport.update({
     id: '/administration/categories',
     path: '/administration/categories',
-    getParentRoute: () => DashboardRoute,
+    getParentRoute: () => DashboardLazyRoute,
   } as any)
 const DashboardSocialCsrActivitiesIndexRoute =
   DashboardSocialCsrActivitiesIndexRouteImport.update({
     id: '/social/csr-activities/',
     path: '/social/csr-activities/',
-    getParentRoute: () => DashboardRoute,
+    getParentRoute: () => DashboardLazyRoute,
   } as any)
 const DashboardGovernancePoliciesIndexRoute =
   DashboardGovernancePoliciesIndexRouteImport.update({
     id: '/governance/policies/',
     path: '/governance/policies/',
-    getParentRoute: () => DashboardRoute,
+    getParentRoute: () => DashboardLazyRoute,
   } as any)
 const DashboardGovernanceComplianceIssuesIndexRoute =
   DashboardGovernanceComplianceIssuesIndexRouteImport.update({
     id: '/governance/compliance-issues/',
     path: '/governance/compliance-issues/',
-    getParentRoute: () => DashboardRoute,
+    getParentRoute: () => DashboardLazyRoute,
   } as any)
 const DashboardGovernanceAuditsIndexRoute =
   DashboardGovernanceAuditsIndexRouteImport.update({
     id: '/governance/audits/',
     path: '/governance/audits/',
-    getParentRoute: () => DashboardRoute,
+    getParentRoute: () => DashboardLazyRoute,
   } as any)
 const DashboardSocialCsrActivitiesActivityIdRoute =
   DashboardSocialCsrActivitiesActivityIdRouteImport.update({
     id: '/social/csr-activities/$activityId',
     path: '/social/csr-activities/$activityId',
-    getParentRoute: () => DashboardRoute,
+    getParentRoute: () => DashboardLazyRoute,
   } as any)
 const DashboardGovernancePoliciesPolicyIdRoute =
   DashboardGovernancePoliciesPolicyIdRouteImport.update({
     id: '/governance/policies/$policyId',
     path: '/governance/policies/$policyId',
-    getParentRoute: () => DashboardRoute,
+    getParentRoute: () => DashboardLazyRoute,
   } as any)
 const DashboardGovernanceComplianceIssuesIssueIdRoute =
   DashboardGovernanceComplianceIssuesIssueIdRouteImport.update({
     id: '/governance/compliance-issues/$issueId',
     path: '/governance/compliance-issues/$issueId',
-    getParentRoute: () => DashboardRoute,
+    getParentRoute: () => DashboardLazyRoute,
   } as any)
 const DashboardGovernanceAuditsAuditIdRoute =
   DashboardGovernanceAuditsAuditIdRouteImport.update({
     id: '/governance/audits/$auditId',
     path: '/governance/audits/$auditId',
-    getParentRoute: () => DashboardRoute,
+    getParentRoute: () => DashboardLazyRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRouteWithChildren
   '/auth': typeof AuthLazyRouteWithChildren
+  '/dashboard': typeof DashboardLazyRouteWithChildren
   '/forget-password': typeof ForgetPasswordLazyRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/auth/login': typeof AuthLoginLazyRoute
@@ -348,8 +348,8 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRouteWithChildren
   '/auth': typeof AuthLazyRouteWithChildren
+  '/dashboard': typeof DashboardLazyRouteWithChildren
   '/forget-password': typeof ForgetPasswordLazyRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/auth/login': typeof AuthLoginLazyRoute
@@ -389,8 +389,8 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/dashboard'
     | '/auth'
+    | '/dashboard'
     | '/forget-password'
     | '/dashboard/settings'
     | '/auth/login'
@@ -466,8 +466,8 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/dashboard'
     | '/auth'
+    | '/dashboard'
     | '/forget-password'
     | '/dashboard/settings'
     | '/auth/login'
@@ -506,8 +506,8 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  DashboardRoute: typeof DashboardRouteWithChildren
   AuthLazyRoute: typeof AuthLazyRouteWithChildren
+  DashboardLazyRoute: typeof DashboardLazyRouteWithChildren
   ForgetPasswordLazyRoute: typeof ForgetPasswordLazyRoute
 }
 
@@ -520,18 +520,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ForgetPasswordLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthLazyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -546,7 +546,7 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/dashboard/'
       preLoaderRoute: typeof DashboardIndexRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof DashboardLazyRoute
     }
     '/auth/signup': {
       id: '/auth/signup'
@@ -567,215 +567,229 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/dashboard/settings'
       preLoaderRoute: typeof DashboardSettingsRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof DashboardLazyRoute
     }
     '/dashboard/social/training-completion': {
       id: '/dashboard/social/training-completion'
       path: '/social/training-completion'
       fullPath: '/dashboard/social/training-completion'
       preLoaderRoute: typeof DashboardSocialTrainingCompletionRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof DashboardLazyRoute
     }
     '/dashboard/social/overview': {
       id: '/dashboard/social/overview'
       path: '/social/overview'
       fullPath: '/dashboard/social/overview'
       preLoaderRoute: typeof DashboardSocialOverviewRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof DashboardLazyRoute
     }
     '/dashboard/social/employee-participation': {
       id: '/dashboard/social/employee-participation'
       path: '/social/employee-participation'
       fullPath: '/dashboard/social/employee-participation'
       preLoaderRoute: typeof DashboardSocialEmployeeParticipationRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof DashboardLazyRoute
     }
     '/dashboard/social/diversity-metrics': {
       id: '/dashboard/social/diversity-metrics'
       path: '/social/diversity-metrics'
       fullPath: '/dashboard/social/diversity-metrics'
       preLoaderRoute: typeof DashboardSocialDiversityMetricsRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof DashboardLazyRoute
     }
     '/dashboard/governance/policy-acknowledgements': {
       id: '/dashboard/governance/policy-acknowledgements'
       path: '/governance/policy-acknowledgements'
       fullPath: '/dashboard/governance/policy-acknowledgements'
       preLoaderRoute: typeof DashboardGovernancePolicyAcknowledgementsRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof DashboardLazyRoute
     }
     '/dashboard/governance/overview': {
       id: '/dashboard/governance/overview'
       path: '/governance/overview'
       fullPath: '/dashboard/governance/overview'
       preLoaderRoute: typeof DashboardGovernanceOverviewRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof DashboardLazyRoute
     }
     '/dashboard/gamification/rewards': {
       id: '/dashboard/gamification/rewards'
       path: '/gamification/rewards'
       fullPath: '/dashboard/gamification/rewards'
       preLoaderRoute: typeof DashboardGamificationRewardsRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof DashboardLazyRoute
     }
     '/dashboard/gamification/redemptions': {
       id: '/dashboard/gamification/redemptions'
       path: '/gamification/redemptions'
       fullPath: '/dashboard/gamification/redemptions'
       preLoaderRoute: typeof DashboardGamificationRedemptionsRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof DashboardLazyRoute
     }
     '/dashboard/gamification/participation-approvals': {
       id: '/dashboard/gamification/participation-approvals'
       path: '/gamification/participation-approvals'
       fullPath: '/dashboard/gamification/participation-approvals'
       preLoaderRoute: typeof DashboardGamificationParticipationApprovalsRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof DashboardLazyRoute
     }
     '/dashboard/gamification/leaderboard': {
       id: '/dashboard/gamification/leaderboard'
       path: '/gamification/leaderboard'
       fullPath: '/dashboard/gamification/leaderboard'
       preLoaderRoute: typeof DashboardGamificationLeaderboardRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof DashboardLazyRoute
     }
     '/dashboard/gamification/challenges': {
       id: '/dashboard/gamification/challenges'
       path: '/gamification/challenges'
       fullPath: '/dashboard/gamification/challenges'
       preLoaderRoute: typeof DashboardGamificationChallengesRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof DashboardLazyRoute
     }
     '/dashboard/gamification/badges': {
       id: '/dashboard/gamification/badges'
       path: '/gamification/badges'
       fullPath: '/dashboard/gamification/badges'
       preLoaderRoute: typeof DashboardGamificationBadgesRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof DashboardLazyRoute
     }
     '/dashboard/environmental/sustainability-goals': {
       id: '/dashboard/environmental/sustainability-goals'
       path: '/environmental/sustainability-goals'
       fullPath: '/dashboard/environmental/sustainability-goals'
       preLoaderRoute: typeof DashboardEnvironmentalSustainabilityGoalsRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof DashboardLazyRoute
     }
     '/dashboard/environmental/product-esg-profiles': {
       id: '/dashboard/environmental/product-esg-profiles'
       path: '/environmental/product-esg-profiles'
       fullPath: '/dashboard/environmental/product-esg-profiles'
       preLoaderRoute: typeof DashboardEnvironmentalProductEsgProfilesRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof DashboardLazyRoute
     }
     '/dashboard/environmental/overview': {
       id: '/dashboard/environmental/overview'
       path: '/environmental/overview'
       fullPath: '/dashboard/environmental/overview'
       preLoaderRoute: typeof DashboardEnvironmentalOverviewRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof DashboardLazyRoute
     }
     '/dashboard/environmental/emission-factors': {
       id: '/dashboard/environmental/emission-factors'
       path: '/environmental/emission-factors'
       fullPath: '/dashboard/environmental/emission-factors'
       preLoaderRoute: typeof DashboardEnvironmentalEmissionFactorsRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof DashboardLazyRoute
     }
     '/dashboard/environmental/carbon-transactions': {
       id: '/dashboard/environmental/carbon-transactions'
       path: '/environmental/carbon-transactions'
       fullPath: '/dashboard/environmental/carbon-transactions'
       preLoaderRoute: typeof DashboardEnvironmentalCarbonTransactionsRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof DashboardLazyRoute
     }
     '/dashboard/administration/notification-settings': {
       id: '/dashboard/administration/notification-settings'
       path: '/administration/notification-settings'
       fullPath: '/dashboard/administration/notification-settings'
       preLoaderRoute: typeof DashboardAdministrationNotificationSettingsRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof DashboardLazyRoute
     }
     '/dashboard/administration/esg-configuration': {
       id: '/dashboard/administration/esg-configuration'
       path: '/administration/esg-configuration'
       fullPath: '/dashboard/administration/esg-configuration'
       preLoaderRoute: typeof DashboardAdministrationEsgConfigurationRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof DashboardLazyRoute
     }
     '/dashboard/administration/departments': {
       id: '/dashboard/administration/departments'
       path: '/administration/departments'
       fullPath: '/dashboard/administration/departments'
       preLoaderRoute: typeof DashboardAdministrationDepartmentsRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof DashboardLazyRoute
     }
     '/dashboard/administration/categories': {
       id: '/dashboard/administration/categories'
       path: '/administration/categories'
       fullPath: '/dashboard/administration/categories'
       preLoaderRoute: typeof DashboardAdministrationCategoriesRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof DashboardLazyRoute
     }
     '/dashboard/social/csr-activities/': {
       id: '/dashboard/social/csr-activities/'
       path: '/social/csr-activities'
       fullPath: '/dashboard/social/csr-activities/'
       preLoaderRoute: typeof DashboardSocialCsrActivitiesIndexRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof DashboardLazyRoute
     }
     '/dashboard/governance/policies/': {
       id: '/dashboard/governance/policies/'
       path: '/governance/policies'
       fullPath: '/dashboard/governance/policies/'
       preLoaderRoute: typeof DashboardGovernancePoliciesIndexRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof DashboardLazyRoute
     }
     '/dashboard/governance/compliance-issues/': {
       id: '/dashboard/governance/compliance-issues/'
       path: '/governance/compliance-issues'
       fullPath: '/dashboard/governance/compliance-issues/'
       preLoaderRoute: typeof DashboardGovernanceComplianceIssuesIndexRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof DashboardLazyRoute
     }
     '/dashboard/governance/audits/': {
       id: '/dashboard/governance/audits/'
       path: '/governance/audits'
       fullPath: '/dashboard/governance/audits/'
       preLoaderRoute: typeof DashboardGovernanceAuditsIndexRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof DashboardLazyRoute
     }
     '/dashboard/social/csr-activities/$activityId': {
       id: '/dashboard/social/csr-activities/$activityId'
       path: '/social/csr-activities/$activityId'
       fullPath: '/dashboard/social/csr-activities/$activityId'
       preLoaderRoute: typeof DashboardSocialCsrActivitiesActivityIdRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof DashboardLazyRoute
     }
     '/dashboard/governance/policies/$policyId': {
       id: '/dashboard/governance/policies/$policyId'
       path: '/governance/policies/$policyId'
       fullPath: '/dashboard/governance/policies/$policyId'
       preLoaderRoute: typeof DashboardGovernancePoliciesPolicyIdRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof DashboardLazyRoute
     }
     '/dashboard/governance/compliance-issues/$issueId': {
       id: '/dashboard/governance/compliance-issues/$issueId'
       path: '/governance/compliance-issues/$issueId'
       fullPath: '/dashboard/governance/compliance-issues/$issueId'
       preLoaderRoute: typeof DashboardGovernanceComplianceIssuesIssueIdRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof DashboardLazyRoute
     }
     '/dashboard/governance/audits/$auditId': {
       id: '/dashboard/governance/audits/$auditId'
       path: '/governance/audits/$auditId'
       fullPath: '/dashboard/governance/audits/$auditId'
       preLoaderRoute: typeof DashboardGovernanceAuditsAuditIdRouteImport
-      parentRoute: typeof DashboardRoute
+      parentRoute: typeof DashboardLazyRoute
     }
   }
 }
 
-interface DashboardRouteChildren {
+interface AuthLazyRouteChildren {
+  AuthLoginLazyRoute: typeof AuthLoginLazyRoute
+  AuthSignupLazyRoute: typeof AuthSignupLazyRoute
+}
+
+const AuthLazyRouteChildren: AuthLazyRouteChildren = {
+  AuthLoginLazyRoute: AuthLoginLazyRoute,
+  AuthSignupLazyRoute: AuthSignupLazyRoute,
+}
+
+const AuthLazyRouteWithChildren = AuthLazyRoute._addFileChildren(
+  AuthLazyRouteChildren,
+)
+
+interface DashboardLazyRouteChildren {
   DashboardSettingsRoute: typeof DashboardSettingsRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
   DashboardAdministrationCategoriesRoute: typeof DashboardAdministrationCategoriesRoute
@@ -809,7 +823,7 @@ interface DashboardRouteChildren {
   DashboardSocialCsrActivitiesIndexRoute: typeof DashboardSocialCsrActivitiesIndexRoute
 }
 
-const DashboardRouteChildren: DashboardRouteChildren = {
+const DashboardLazyRouteChildren: DashboardLazyRouteChildren = {
   DashboardSettingsRoute: DashboardSettingsRoute,
   DashboardIndexRoute: DashboardIndexRoute,
   DashboardAdministrationCategoriesRoute:
@@ -860,28 +874,14 @@ const DashboardRouteChildren: DashboardRouteChildren = {
     DashboardSocialCsrActivitiesIndexRoute,
 }
 
-const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
-  DashboardRouteChildren,
-)
-
-interface AuthLazyRouteChildren {
-  AuthLoginLazyRoute: typeof AuthLoginLazyRoute
-  AuthSignupLazyRoute: typeof AuthSignupLazyRoute
-}
-
-const AuthLazyRouteChildren: AuthLazyRouteChildren = {
-  AuthLoginLazyRoute: AuthLoginLazyRoute,
-  AuthSignupLazyRoute: AuthSignupLazyRoute,
-}
-
-const AuthLazyRouteWithChildren = AuthLazyRoute._addFileChildren(
-  AuthLazyRouteChildren,
+const DashboardLazyRouteWithChildren = DashboardLazyRoute._addFileChildren(
+  DashboardLazyRouteChildren,
 )
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  DashboardRoute: DashboardRouteWithChildren,
   AuthLazyRoute: AuthLazyRouteWithChildren,
+  DashboardLazyRoute: DashboardLazyRouteWithChildren,
   ForgetPasswordLazyRoute: ForgetPasswordLazyRoute,
 }
 export const routeTree = rootRouteImport
