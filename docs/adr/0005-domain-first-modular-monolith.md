@@ -1,0 +1,3 @@
+# Domain-first modular monolith
+
+The Go backend is a single deployable structured by domain, not by layer: one package per ESG module (`environmental/`, `social/`, `governance/`, `gamification/`), each owning its handlers, service logic, sqlc queries, and its pillar Scorer; cross-cutting concerns live in `internal/platform/` (config, tenant-aware DB, auth, storage, mail, notifications), tenancy in `internal/tenancy/`, the scoring engine in `internal/scoring/`, exports in `internal/reporting/`. Chosen over layer-first (`handlers/services/repository`) so modules mirror the problem statement's pillars and are individually ownable, and over hexagonal/clean layering as ceremony beyond a 2-dev scope.
