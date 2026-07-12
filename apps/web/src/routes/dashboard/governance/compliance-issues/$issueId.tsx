@@ -124,6 +124,7 @@ function IssueDetail() {
   const { issueId } = Route.useParams();
   const issue = Route.useLoaderData();
   const [status, setStatus] = useState(issue.status);
+  const linkedAudit = issue.linkedAudit;
 
   function toggleResolved() {
     if (status === "Resolved" || status === "Closed") {
@@ -171,13 +172,13 @@ function IssueDetail() {
               <dd className="tabular-nums">{issue.due}</dd>
               <dt className="text-muted-foreground">Linked audit</dt>
               <dd>
-                {issue.linkedAudit ? (
+                {linkedAudit ? (
                   <Link
                     to="/dashboard/governance/audits/$auditId"
-                    params={{ auditId: issue.linkedAudit }}
+                    params={{ auditId: linkedAudit } as any}
                     className="text-governance hover:underline"
                   >
-                    {issue.linkedAudit}
+                    {linkedAudit}
                   </Link>
                 ) : (
                   <span className="text-muted-foreground">No linked audit</span>

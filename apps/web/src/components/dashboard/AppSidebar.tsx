@@ -142,7 +142,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       : location.pathname.startsWith(item.url || "");
                   return (
                     <SidebarMenuItem key={item.title}>
-                      <SidebarMenuButton render={<Link to={item.url!} />} isActive={isActive}>
+                      <SidebarMenuButton render={<Link to={item.url! as any} />} isActive={isActive}>
                         <item.icon />
                         <span>{item.title}</span>
                       </SidebarMenuButton>
@@ -167,7 +167,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                           {item.items.map((subItem) => (
                             <SidebarMenuSubItem key={subItem.title}>
                               <SidebarMenuSubButton
-                                render={<Link to={subItem.url} />}
+                                render={<Link to={subItem.url as any} />}
                                 isActive={location.pathname === subItem.url}
                               >
                                 <span>{subItem.title}</span>

@@ -288,15 +288,18 @@ function AuditDetail() {
                     <p className="font-medium text-sm">{f.title}</p>
                   </div>
                   <p className="mt-1 text-sm text-muted-foreground">{f.description}</p>
-                  {f.linkedIssue && (
-                    <Link
-                      to="/dashboard/governance/compliance-issues/$issueId"
-                      params={{ issueId: f.linkedIssue }}
-                      className="mt-1 inline-block text-sm text-governance hover:underline"
-                    >
-                      View compliance issue {f.linkedIssue} →
-                    </Link>
-                  )}
+                  {(() => {
+                    const issueId = f.linkedIssue;
+                    return issueId ? (
+                      <Link
+                        to="/dashboard/governance/compliance-issues/$issueId"
+                        params={{ issueId } as any}
+                        className="mt-1 inline-block text-sm text-governance hover:underline"
+                      >
+                        View compliance issue {issueId} →
+                      </Link>
+                    ) : null;
+                  })()}
                 </div>
               ))
             )}
