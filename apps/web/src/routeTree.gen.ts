@@ -14,6 +14,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
+import { Route as DashboardSettingsRouteImport } from './routes/dashboard/settings'
 import { Route as DashboardSocialTrainingCompletionRouteImport } from './routes/dashboard/social/training-completion'
 import { Route as DashboardSocialOverviewRouteImport } from './routes/dashboard/social/overview'
 import { Route as DashboardSocialEmployeeParticipationRouteImport } from './routes/dashboard/social/employee-participation'
@@ -46,9 +47,6 @@ import { Route as DashboardGovernanceAuditsAuditIdRouteImport } from './routes/d
 
 const ForgetPasswordLazyRouteImport = createFileRoute('/forget-password')()
 const AuthLazyRouteImport = createFileRoute('/auth')()
-const DashboardSettingsLazyRouteImport = createFileRoute(
-  '/dashboard/settings',
-)()
 const AuthSignupLazyRouteImport = createFileRoute('/auth/signup')()
 const AuthLoginLazyRouteImport = createFileRoute('/auth/login')()
 
@@ -81,13 +79,6 @@ const DashboardIndexRoute = DashboardIndexRouteImport.update({
 } as any).lazy(() =>
   import('./routes/dashboard/index.lazy').then((d) => d.Route),
 )
-const DashboardSettingsLazyRoute = DashboardSettingsLazyRouteImport.update({
-  id: '/settings',
-  path: '/settings',
-  getParentRoute: () => DashboardRoute,
-} as any).lazy(() =>
-  import('./routes/dashboard/settings.lazy').then((d) => d.Route),
-)
 const AuthSignupLazyRoute = AuthSignupLazyRouteImport.update({
   id: '/signup',
   path: '/signup',
@@ -98,6 +89,13 @@ const AuthLoginLazyRoute = AuthLoginLazyRouteImport.update({
   path: '/login',
   getParentRoute: () => AuthLazyRoute,
 } as any).lazy(() => import('./routes/auth/login.lazy').then((d) => d.Route))
+const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => DashboardRoute,
+} as any).lazy(() =>
+  import('./routes/dashboard/settings.lazy').then((d) => d.Route),
+)
 const DashboardSocialTrainingCompletionRoute =
   DashboardSocialTrainingCompletionRouteImport.update({
     id: '/social/training-completion',
@@ -277,9 +275,9 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRouteWithChildren
   '/auth': typeof AuthLazyRouteWithChildren
   '/forget-password': typeof ForgetPasswordLazyRoute
+  '/dashboard/settings': typeof DashboardSettingsRoute
   '/auth/login': typeof AuthLoginLazyRoute
   '/auth/signup': typeof AuthSignupLazyRoute
-  '/dashboard/settings': typeof DashboardSettingsLazyRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/dashboard/administration/categories': typeof DashboardAdministrationCategoriesRoute
   '/dashboard/administration/departments': typeof DashboardAdministrationDepartmentsRoute
@@ -315,9 +313,9 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthLazyRouteWithChildren
   '/forget-password': typeof ForgetPasswordLazyRoute
+  '/dashboard/settings': typeof DashboardSettingsRoute
   '/auth/login': typeof AuthLoginLazyRoute
   '/auth/signup': typeof AuthSignupLazyRoute
-  '/dashboard/settings': typeof DashboardSettingsLazyRoute
   '/dashboard': typeof DashboardIndexRoute
   '/dashboard/administration/categories': typeof DashboardAdministrationCategoriesRoute
   '/dashboard/administration/departments': typeof DashboardAdministrationDepartmentsRoute
@@ -355,9 +353,9 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRouteWithChildren
   '/auth': typeof AuthLazyRouteWithChildren
   '/forget-password': typeof ForgetPasswordLazyRoute
+  '/dashboard/settings': typeof DashboardSettingsRoute
   '/auth/login': typeof AuthLoginLazyRoute
   '/auth/signup': typeof AuthSignupLazyRoute
-  '/dashboard/settings': typeof DashboardSettingsLazyRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/dashboard/administration/categories': typeof DashboardAdministrationCategoriesRoute
   '/dashboard/administration/departments': typeof DashboardAdministrationDepartmentsRoute
@@ -396,9 +394,9 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/auth'
     | '/forget-password'
+    | '/dashboard/settings'
     | '/auth/login'
     | '/auth/signup'
-    | '/dashboard/settings'
     | '/dashboard/'
     | '/dashboard/administration/categories'
     | '/dashboard/administration/departments'
@@ -434,9 +432,9 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/forget-password'
+    | '/dashboard/settings'
     | '/auth/login'
     | '/auth/signup'
-    | '/dashboard/settings'
     | '/dashboard'
     | '/dashboard/administration/categories'
     | '/dashboard/administration/departments'
@@ -473,9 +471,9 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/auth'
     | '/forget-password'
+    | '/dashboard/settings'
     | '/auth/login'
     | '/auth/signup'
-    | '/dashboard/settings'
     | '/dashboard/'
     | '/dashboard/administration/categories'
     | '/dashboard/administration/departments'
@@ -552,13 +550,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardIndexRouteImport
       parentRoute: typeof DashboardRoute
     }
-    '/dashboard/settings': {
-      id: '/dashboard/settings'
-      path: '/settings'
-      fullPath: '/dashboard/settings'
-      preLoaderRoute: typeof DashboardSettingsLazyRouteImport
-      parentRoute: typeof DashboardRoute
-    }
     '/auth/signup': {
       id: '/auth/signup'
       path: '/signup'
@@ -572,6 +563,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/auth/login'
       preLoaderRoute: typeof AuthLoginLazyRouteImport
       parentRoute: typeof AuthLazyRoute
+    }
+    '/dashboard/settings': {
+      id: '/dashboard/settings'
+      path: '/settings'
+      fullPath: '/dashboard/settings'
+      preLoaderRoute: typeof DashboardSettingsRouteImport
+      parentRoute: typeof DashboardRoute
     }
     '/dashboard/social/training-completion': {
       id: '/dashboard/social/training-completion'
@@ -780,7 +778,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface DashboardRouteChildren {
-  DashboardSettingsLazyRoute: typeof DashboardSettingsLazyRoute
+  DashboardSettingsRoute: typeof DashboardSettingsRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
   DashboardAdministrationCategoriesRoute: typeof DashboardAdministrationCategoriesRoute
   DashboardAdministrationDepartmentsRoute: typeof DashboardAdministrationDepartmentsRoute
@@ -814,7 +812,7 @@ interface DashboardRouteChildren {
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
-  DashboardSettingsLazyRoute: DashboardSettingsLazyRoute,
+  DashboardSettingsRoute: DashboardSettingsRoute,
   DashboardIndexRoute: DashboardIndexRoute,
   DashboardAdministrationCategoriesRoute:
     DashboardAdministrationCategoriesRoute,
