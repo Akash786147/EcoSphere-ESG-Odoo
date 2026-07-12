@@ -1,0 +1,555 @@
+erDiagram
+    %% ================= TENANT ROOT =================
+
+    ORGANIZATION {
+        uuid id PK
+        string name
+        string industry
+        string country
+        string currency
+        string timezone
+        string logo_url
+        datetime created_at
+        enum status "ACTIVE | SUSPENDED"
+    }
+
+    %% ================= MASTER DATA =================
+
+    DEPARTMENT {
+        uuid id PK
+        uuid organization_id FK
+        string name
+        string code "unique within org"
+        uuid head_id FK
+        uuid parent_department_id FK
+        int employee_count
+        enum status
+    }
+
+    EMPLOYEE {
+        uuid id PK
+        uuid organization_id FK
+        string name
+        string email "unique within org"
+        uuid department_id FK
+        enum role "ADMIN | ESG_OFFICER | DEPT_HEAD | EMPLOYEE | AUDITOR"
+        string gender "diversity metric"
+        string age_band "diversity: <25 | 25-34 | 35-44 | 45-54 | 55+"
+        string ethnicity "diversity, self-declared, nullable"
+        boolean disability_status "diversity, self-declared, nullable"
+        string nationality
+        date join_date
+        enum status
+    }
+
+    CATEGORY {
+        uuid id PK
+        uuid organization_id FK
+        string name
+        enum type "CSR_ACTIVITY | CHALLENGE | TRAINING"
+        enum status
+    }
+
+    EMISSION_FACTOR {
+        uuid id PK
+        uuid organization_id FK
+        string activity_name
+        enum scope "SCOPE_1 | SCOPE_2 | SCOPE_3"
+        decimal co2e_per_unit
+        string unit
+        string source "DEFRA | EPA | CEA_INDIA | CUSTOM"
+        date valid_from
+        date valid_to
+        enum status
+    }
+
+    PRODUCT_ESG_PROFILE {
+        uuid id PK
+        uuid organization_id FK
+        string product_name
+        string sku
+        decimal carbon_footprint_per_unit
+        decimal recyclability_pct
+        string certifications
+        enum status
+    }
+
+    VENDOR {
+        uuid id PK
+        uuid organization_id FK
+        string name
+        string vendor_code
+        enum vendor_type "SUPPLIER | SERVICE_PROVIDER | CONTRACTOR"
+        string country
+        string esg_rating "A/B/C or self-declared"
+        boolean sustainability_certified
+        enum status
+    }
+
+    ENVIRONMENTAL_GOAL {
+        uuid id PK
+        uuid organization_id FK
+        string title
+        uuid department_id FK "null = org-wide"
+        enum metric
+        decimal target_value
+        decimal baseline_value
+        date start_date
+        date target_date
+        enum status
+    }
+
+    ESG_POLICY {
+        uuid id PK
+        uuid organization_id FK
+        string title
+        text content
+        string version
+        date effective_date
+        date ack_deadline
+        boolean ack_required
+        enum status
+    }
+
+    TRAINING {
+        uuid id PK
+        uuid organization_id FK
+        string title
+        text description
+        uuid category_id FK
+        enum training_type "MANDATORY | OPTIONAL"
+        int duration_minutes
+        int xp_reward
+        string content_url "video / doc / external LMS link"
+        date valid_from
+        date valid_to
+        enum status "DRAFT | PUBLISHED | RETIRED"
+    }
+
+    BADGE {
+        uuid id PK
+        uuid organization_id FK
+        string name
+        string description
+        json unlock_rule
+        string icon
+        enum status
+    }
+
+    REWARD {
+        uuid id PK
+        uuid organization_id FK
+        string name
+        string description
+        int points_required
+        int stock
+        enum status
+    }
+
+    ESG_CONFIGURATION {
+        uuid id PK
+        uuid organization_id FK "1:1 with org"
+        decimal env_weight
+        decimal social_weight
+        decimal gov_weight
+        boolean auto_emission_calc
+        boolean evidence_required "global default"
+        boolean badge_auto_award
+        json notification_settings
+    }
+
+    FRAMEWORK_MAPPING {
+        uuid id PK
+        uuid organization_id FK
+        enum framework "BRSR | GRI | CSRD"
+        string framework_code
+        enum module
+        string internal_metric
+    }
+
+    %% ================= UNIFIED FILE / EVIDENCE =================
+
+    FILE {
+        uuid id PK
+        uuid organization_id FK
+        string url
+        string mime_type
+        int size_bytes
+        string original_name
+        uuid uploaded_by FK
+        string entity_type "polymorphic"
+        uuid entity_id
+        enum purpose "PROOF | ATTACHMENT | REPORT | AVATAR | CERTIFICATE"
+        datetime uploaded_at
+    }
+
+    %% ================= TRANSACTIONAL DATA =================
+
+    ERP_OPERATION {
+        uuid id PK
+        uuid organization_id FK
+        enum type "PURCHASE | MANUFACTURING | EXPENSE | FLEET"
+        uuid department_id FK
+        uuid vendor_id FK "for PURCHASE type"
+        string description
+        decimal quantity
+        string unit
+        decimal amount
+        date operation_date
+    }
+
+    CARBON_TRANSACTION {
+        uuid id PK
+        uuid organization_id FK
+        uuid erp_operation_id FK
+        uuid emission_factor_id FK
+        uuid department_id FK
+        uuid product_id FK
+        uuid vendor_id FK "for Scope 3 attribution"
+        enum scope
+        decimal activity_value
+        decimal co2e_calculated
+        enum data_quality "MEASURED | CALCULATED | ESTIMATED"
+        enum entry_mode "AUTO | MANUAL"
+        date transaction_date
+    }
+
+    CSR_ACTIVITY {
+        uuid id PK
+        uuid organization_id FK
+        string title
+        uuid category_id FK
+        text description
+        date activity_date
+        string location
+        int points_on_completion
+        boolean evidence_required "per-activity override of global toggle"
+        uuid organizer_id FK
+        enum status "PLANNED | OPEN | CLOSED"
+    }
+
+    EMPLOYEE_PARTICIPATION {
+        uuid id PK
+        uuid organization_id FK
+        uuid employee_id FK
+        uuid csr_activity_id FK
+        enum approval_status "PENDING | APPROVED | REJECTED"
+        uuid approved_by FK
+        int points_earned
+        date completion_date
+    }
+
+    TRAINING_COMPLETION {
+        uuid id PK
+        uuid organization_id FK
+        uuid training_id FK
+        uuid employee_id FK
+        enum status "ENROLLED | IN_PROGRESS | COMPLETED | EXPIRED"
+        int progress_pct
+        decimal score_pct "quiz / assessment result"
+        datetime started_at
+        datetime completed_at
+        date expires_at "for mandatory recertification"
+        int xp_awarded
+    }
+
+    CHALLENGE {
+        uuid id PK
+        uuid organization_id FK
+        string title
+        uuid category_id FK
+        text description
+        int xp_reward
+        enum difficulty
+        enum challenge_type "INDIVIDUAL | TEAM"
+        boolean evidence_required
+        date deadline
+        enum status "DRAFT | ACTIVE | UNDER_REVIEW | COMPLETED | ARCHIVED"
+    }
+
+    CHALLENGE_PARTICIPATION {
+        uuid id PK
+        uuid organization_id FK
+        uuid challenge_id FK
+        uuid employee_id FK
+        uuid department_id FK
+        int progress_pct
+        enum approval_status
+        uuid approved_by FK
+        int xp_awarded
+        datetime completed_at
+    }
+
+    POLICY_ACKNOWLEDGEMENT {
+        uuid id PK
+        uuid organization_id FK
+        uuid policy_id FK
+        uuid employee_id FK
+        datetime acknowledged_at
+        string policy_version_at_ack
+        enum status
+    }
+
+    AUDIT {
+        uuid id PK
+        uuid organization_id FK
+        string title
+        enum audit_type "INTERNAL | EXTERNAL"
+        uuid department_id FK
+        uuid vendor_id FK "null for internal, set for vendor audits"
+        uuid auditor_id FK
+        date audit_date
+        text findings_summary
+        enum status
+    }
+
+    COMPLIANCE_ISSUE {
+        uuid id PK
+        uuid organization_id FK
+        uuid audit_id FK
+        enum severity "LOW | MEDIUM | HIGH | CRITICAL"
+        text description
+        uuid owner_id FK "mandatory"
+        date due_date "mandatory"
+        boolean overdue_flagged
+        enum status
+    }
+
+    DEPARTMENT_SCORE {
+        uuid id PK
+        uuid organization_id FK
+        uuid department_id FK
+        string period
+        decimal environmental_score
+        decimal social_score
+        decimal governance_score
+        decimal total_score
+        decimal data_confidence_pct
+        datetime calculated_at
+    }
+
+    GOAL_FORECAST {
+        uuid id PK
+        uuid goal_id FK
+        date forecast_date
+        decimal projected_value
+        date projected_breach_date
+        decimal deviation_pct
+    }
+
+    %% ============ GAMIFICATION ============
+
+    POINTS_LEDGER {
+        uuid id PK
+        uuid organization_id FK
+        uuid employee_id FK
+        enum entry_type "EARN | REDEEM | ADJUST | EXPIRE"
+        int points
+        enum source "CSR | CHALLENGE | TRAINING | STREAK_BONUS | REDEMPTION"
+        uuid source_ref_id
+        datetime created_at
+    }
+
+    EMPLOYEE_BADGE {
+        uuid id PK
+        uuid organization_id FK
+        uuid employee_id FK
+        uuid badge_id FK
+        enum award_mode "AUTO | MANUAL"
+        datetime awarded_at
+    }
+
+    REWARD_REDEMPTION {
+        uuid id PK
+        uuid organization_id FK
+        uuid reward_id FK
+        uuid employee_id FK
+        int points_spent
+        enum status "REQUESTED | FULFILLED | CANCELLED"
+        datetime redeemed_at
+    }
+
+    STREAK {
+        uuid id PK
+        uuid organization_id FK
+        uuid employee_id FK
+        int current_streak_days
+        int longest_streak_days
+        decimal xp_multiplier
+        date last_activity_date
+    }
+
+    %% ============ NOTIFICATION ============
+
+    NOTIFICATION {
+        uuid id PK
+        uuid organization_id FK
+        uuid recipient_id FK
+        enum type "COMPLIANCE_ISSUE | APPROVAL_DECISION | POLICY_REMINDER | BADGE_UNLOCK | GOAL_AT_RISK | TRAINING_DUE"
+        string title
+        text body
+        json payload
+        boolean is_read
+        datetime created_at
+    }
+
+    NOTIFICATION_QUEUE {
+        uuid id PK
+        uuid notification_id FK
+        enum channel "IN_APP | EMAIL | PUSH"
+        enum status "PENDING | SENDING | SENT | FAILED | RETRY"
+        int attempts
+        int max_attempts
+        datetime next_retry_at
+        text error_message
+        datetime sent_at
+    }
+
+    %% ============ ANALYTICS ============
+
+    ANALYTICS_SNAPSHOT {
+        uuid id PK
+        uuid organization_id FK
+        uuid department_id FK
+        enum period_type "DAILY | WEEKLY | MONTHLY | QUARTERLY | YEARLY"
+        date period_start
+        date period_end
+        string metric_key "TOTAL_CO2E | CSR_HOURS | POLICY_ACK_RATE | TRAINING_COMPLETION_RATE | DIVERSITY_INDEX"
+        decimal metric_value
+        decimal previous_value
+        json breakdown "by scope, category, gender, age band, etc."
+        datetime calculated_at
+    }
+
+    KPI_METRIC {
+        uuid id PK
+        uuid organization_id FK
+        string kpi_key
+        decimal current_value
+        decimal previous_value
+        enum trend_direction "UP | DOWN | FLAT"
+        decimal trend_pct
+        enum risk_level "LOW | MEDIUM | HIGH"
+        datetime calculated_at
+    }
+
+    DEPARTMENT_RANKING {
+        uuid id PK
+        uuid organization_id FK
+        uuid department_id FK
+        string period
+        int rank
+        int previous_rank
+        decimal score
+        datetime calculated_at
+    }
+
+    ACTIVITY_LOG {
+        uuid id PK
+        uuid organization_id FK
+        uuid actor_id FK
+        string entity_type
+        uuid entity_id
+        enum action "CREATE | UPDATE | APPROVE | REJECT | CONFIG_CHANGE | RECALC"
+        json before_state
+        json after_state
+        datetime created_at
+    }
+
+    %% ================= RELATIONSHIPS =================
+
+    %% Tenant ownership
+    ORGANIZATION ||--o{ DEPARTMENT : "has"
+    ORGANIZATION ||--o{ EMPLOYEE : "has"
+    ORGANIZATION ||--o{ CATEGORY : "has"
+    ORGANIZATION ||--o{ EMISSION_FACTOR : "has"
+    ORGANIZATION ||--o{ PRODUCT_ESG_PROFILE : "has"
+    ORGANIZATION ||--o{ VENDOR : "has"
+    ORGANIZATION ||--o{ ENVIRONMENTAL_GOAL : "has"
+    ORGANIZATION ||--o{ ESG_POLICY : "has"
+    ORGANIZATION ||--o{ TRAINING : "runs"
+    ORGANIZATION ||--o{ BADGE : "has"
+    ORGANIZATION ||--o{ REWARD : "has"
+    ORGANIZATION ||--|| ESG_CONFIGURATION : "configures"
+    ORGANIZATION ||--o{ FRAMEWORK_MAPPING : "adopts"
+    ORGANIZATION ||--o{ FILE : "stores"
+    ORGANIZATION ||--o{ ERP_OPERATION : "records"
+    ORGANIZATION ||--o{ CARBON_TRANSACTION : "tracks"
+    ORGANIZATION ||--o{ CSR_ACTIVITY : "runs"
+    ORGANIZATION ||--o{ CHALLENGE : "runs"
+    ORGANIZATION ||--o{ AUDIT : "conducts"
+    ORGANIZATION ||--o{ DEPARTMENT_SCORE : "scored"
+    ORGANIZATION ||--o{ NOTIFICATION : "sends"
+    ORGANIZATION ||--o{ ANALYTICS_SNAPSHOT : "aggregates"
+    ORGANIZATION ||--o{ KPI_METRIC : "tracks"
+    ORGANIZATION ||--o{ DEPARTMENT_RANKING : "ranks"
+    ORGANIZATION ||--o{ ACTIVITY_LOG : "audits"
+
+    %% Org structure
+    DEPARTMENT ||--o{ DEPARTMENT : "parent of"
+    DEPARTMENT ||--o{ EMPLOYEE : "employs"
+    EMPLOYEE |o--o| DEPARTMENT : "heads"
+
+    %% Environmental
+    DEPARTMENT ||--o{ ERP_OPERATION : "originates"
+    VENDOR |o--o{ ERP_OPERATION : "supplies"
+    ERP_OPERATION |o--o{ CARBON_TRANSACTION : "auto-generates"
+    EMISSION_FACTOR ||--o{ CARBON_TRANSACTION : "used in"
+    DEPARTMENT ||--o{ CARBON_TRANSACTION : "attributed"
+    PRODUCT_ESG_PROFILE |o--o{ CARBON_TRANSACTION : "linked"
+    VENDOR |o--o{ CARBON_TRANSACTION : "Scope 3 source"
+    DEPARTMENT |o--o{ ENVIRONMENTAL_GOAL : "owns"
+    ENVIRONMENTAL_GOAL ||--o{ GOAL_FORECAST : "projected"
+
+    %% Social
+    CATEGORY ||--o{ CSR_ACTIVITY : "classifies"
+    CATEGORY ||--o{ TRAINING : "classifies"
+    EMPLOYEE ||--o{ CSR_ACTIVITY : "organizes"
+    CSR_ACTIVITY ||--o{ EMPLOYEE_PARTICIPATION : "has"
+    EMPLOYEE ||--o{ EMPLOYEE_PARTICIPATION : "joins"
+    EMPLOYEE ||--o{ EMPLOYEE_PARTICIPATION : "approves"
+    TRAINING ||--o{ TRAINING_COMPLETION : "has"
+    EMPLOYEE ||--o{ TRAINING_COMPLETION : "completes"
+
+    %% Gamification
+    CATEGORY ||--o{ CHALLENGE : "classifies"
+    CHALLENGE ||--o{ CHALLENGE_PARTICIPATION : "has"
+    EMPLOYEE ||--o{ CHALLENGE_PARTICIPATION : "joins"
+    DEPARTMENT |o--o{ CHALLENGE_PARTICIPATION : "competes (team)"
+    EMPLOYEE ||--o{ POINTS_LEDGER : "earns / spends"
+    EMPLOYEE ||--o{ EMPLOYEE_BADGE : "unlocks"
+    BADGE ||--o{ EMPLOYEE_BADGE : "awarded as"
+    REWARD ||--o{ REWARD_REDEMPTION : "redeemed"
+    EMPLOYEE ||--o{ REWARD_REDEMPTION : "redeems"
+    REWARD_REDEMPTION ||--|| POINTS_LEDGER : "writes REDEEM"
+    EMPLOYEE ||--|| STREAK : "maintains"
+
+    %% Governance
+    ESG_POLICY ||--o{ POLICY_ACKNOWLEDGEMENT : "requires"
+    EMPLOYEE ||--o{ POLICY_ACKNOWLEDGEMENT : "acknowledges"
+    DEPARTMENT ||--o{ AUDIT : "audited"
+    VENDOR |o--o{ AUDIT : "vendor audit"
+    EMPLOYEE ||--o{ AUDIT : "conducts"
+    AUDIT ||--o{ COMPLIANCE_ISSUE : "raises"
+    EMPLOYEE ||--o{ COMPLIANCE_ISSUE : "owns"
+
+    %% Scoring & analytics
+    DEPARTMENT ||--o{ DEPARTMENT_SCORE : "scored"
+    DEPARTMENT ||--o{ ANALYTICS_SNAPSHOT : "aggregated"
+    DEPARTMENT ||--o{ DEPARTMENT_RANKING : "ranked"
+
+    %% File (polymorphic)
+    EMPLOYEE ||--o{ FILE : "uploads"
+    EMPLOYEE_PARTICIPATION ||..o{ FILE : "proof"
+    CHALLENGE_PARTICIPATION ||..o{ FILE : "proof"
+    TRAINING_COMPLETION ||..o{ FILE : "certificate"
+    AUDIT ||..o{ FILE : "attachments"
+    COMPLIANCE_ISSUE ||..o{ FILE : "evidence"
+    ESG_POLICY ||..o{ FILE : "document"
+
+    %% Notifications
+    EMPLOYEE ||--o{ NOTIFICATION : "receives"
+    NOTIFICATION ||--o{ NOTIFICATION_QUEUE : "delivered via"
+
+    %% Audit trail
+    EMPLOYEE ||--o{ ACTIVITY_LOG : "actions logged"
